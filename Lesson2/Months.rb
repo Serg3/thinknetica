@@ -14,4 +14,4 @@ months = {
 }
 
 puts "Months with 30 days:"
-months.each { |k, v| puts k.capitalize if v == 30 }
+months.each { |month, days| puts month.capitalize if days == 30 }

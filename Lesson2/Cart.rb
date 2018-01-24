@@ -32,11 +32,11 @@ end
 
 total = 0
 
-purchases.each { |k, v|
-  amount = v[:price] * v[:quantity]
-  puts "#{k}: #{v[:price]} x #{v[:quantity]} = #{amount}"
+purchases.each do |purchase, cost|
+  amount = cost[:price] * cost[:quantity]
+  puts "#{purchase}: #{cost[:price]} x #{cost[:quantity]} = #{amount}"
   total += amount
-}
+end
 
 puts "---------------"
 puts "Total: #{total}"

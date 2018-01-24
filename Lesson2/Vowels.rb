@@ -8,9 +8,9 @@ vowels = {
 
 i = 0
 
-('a'..'z').each { |l|
+('a'..'z').each do |l|
   i += 1
   vowels[l] = i unless vowels[l].nil?  
-}
+end
 
 puts vowels

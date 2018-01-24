@@ -1,8 +1,6 @@
 i = 5
 arr = []
 
-while i < 100
-  arr << i += 5 
-end
+arr << i += 5 while i < 100
 
 puts arr
