@@ -1,16 +1,18 @@
-vowels = {
-  "a" => 0,
-  "e" => 0,
-  "i" => 0,
-  "o" => 0,
-  "u" => 0
-}
+puts "Enter 5 chars:"
 
-i = 0
+arr_vowels = []
 
-('a'..'z').each do |char|
-  i += 1
-  vowels[char] = i unless vowels[char].nil?  
+count = 0
+loop do
+  count += 1
+  break if count > 5
+
+  arr_vowels << gets.chomp
 end
 
-puts vowels
+#arr_vowels = ['a', 'e', 'i', 'o', 'u']
+hash_vowels = {}
+
+('a'..'z').each_with_index { |char, index| hash_vowels[char] = index + 1 if arr_vowels.include? char }
+
+puts hash_vowels
