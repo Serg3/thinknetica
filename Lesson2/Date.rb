@@ -1,32 +1,32 @@
 print "Enter year: "
-y = gets.chomp.to_i
+year = gets.chomp.to_i
 
-unless y > 0
+unless year > 0
   puts "Incorrect year!"
   return
 end
 
 print "Enter month: "
-m = gets.chomp.to_i
+month = gets.chomp.to_i
 
-if m < 1 || m > 12
+if month < 1 || month > 12
   puts "Incorrect month!"
   return
 end
 
 arr_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-arr_days[1] = 29 if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0
+arr_days[1] = 29 if (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
 
 print "Enter date: "
-d = gets.chomp.to_i
+day = gets.chomp.to_i
 
-if d < 1 || d > arr_days[m - 1]
+if day < 1 || day > arr_days[month - 1]
   puts "Incorrect day!"
   return
 end
 
 count = 0
-(0...m - 1).each { |i| count += arr_days[i] }
-count += d
+(0...month - 1).each { |i| count += arr_days[i] }
+count += day
 
-puts "Number of day #{d}.#{m} in year #{y} is #{count}"
+puts "Number of day #{day}.#{month} in year #{year} is #{count}"
