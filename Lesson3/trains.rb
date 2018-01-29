@@ -6,28 +6,25 @@ class Station
     @list_of_trains = []
   end
 
-  def input_train(train)
+  def arrival(train)
     @list_of_trains << train
   end
 
-  def output_train(train)
+  def departure(train)
     @list_of_trains.delete(train)
   end
 
-  def list_of_trains(type = nil)
+  def list_of_trains_by_type(type = nil)
     type == nil ? @list_of_trains : @list_of_trains.select { |train| train.type == type }
   end
 end
 
 class Route
-  attr_accessor :name
-  attr_reader :list_of_stations
+  attr_reader :list_of_stations, :name
 
   def initialize(name, first_station, last_station)
     @list_of_stations = []
-    @name = name
-    @first_station = first_station
-    @last_station = last_station
+    @name = first_station.to_s + " - " + last_station.to_s
     @list_of_stations << first_station << last_station
   end
 
@@ -50,11 +47,11 @@ class Train
     @speed = 0
   end
 
-  def speed=(speed)
-    @speed = speed if speed > 0
+  def change_speed(speed)
+    @speed += speed if @speed + speed > 0
   end
 
-  def stop(speed)
+  def stop
     @speed = 0
   end
 
@@ -64,18 +61,18 @@ class Train
 
   def remove_carriage
     if @carriages > 0
-      (@carriages -= 1 if @speed == 0)
+      @carriages -= 1 if @speed == 0
     else
-      (puts "There are no more carriages!")
+      puts "There are no more carriages!"
     end
   end
 
   def route=(route)
     if route.is_a? Route
       @route = route
-      @station = Station.new(@route.list_of_stations.first)
+      @station = @route.list_of_stations.first
       @current_station_index = 0
-      @station.input_train(self)
+      @station.arrival(self)
     end
   end
 
@@ -83,40 +80,46 @@ class Train
     @list_of_stations = @route.list_of_stations
   end
 
+  def current_station_index
+    @current_station_index = @list_of_stations.index(@station)
+  end
+
+  def move_train(station_index)
+    @station.departure(self)
+    @station = @list_of_stations[station_index]
+    @station.arrival(self)
+    current_station_index
+  end
+
   def forward
-    @station.output_train(self)
     list_of_stations
-    @current_station_index += 1
-    if @current_station_index == @list_of_stations.size
-      puts "Final station."
-      @current_station_index -= 1
-    else
-      next_station = @list_of_stations[@current_station_index]
-      @station = Station.new(next_station)
-      @station.input_train(self)
+    forward_station_index = @current_station_index + 1
+    if forward_station_index < @list_of_stations.size
+      move_train(forward_station_index)
     end
   end
 
   def backward
-    @station.output_train(self)
     list_of_stations
-    @current_station_index -= 1
-    if @current_station_index == -1
-      puts "Final station."
-      @current_station_index += 1
-    else
-      next_station = @list_of_stations[@current_station_index]
-      @station = Station.new(next_station)
-      @station.input_train(self)
+    backward_station_index = @current_station_index - 1
+    if backward_station_index > -1
+      move_train(backward_station_index)
     end
   end
 
-  def location
+  def backward_station
     list_of_stations
-    current_station_index = @list_of_stations.index(@station)
+    backward_station_index = current_station_index - 1
+    @list_of_stations[backward_station_index] if backward_station_index > -1
+  end
 
-    puts "Backward station: #{@list_of_stations[current_station_index - 1]}" if current_station_index - 1 != -1
-    puts "Current station: #{@station}"
-    puts "Forward station: #{@list_of_stations[current_station_index + 1]}" if current_station_index + 1 != list_of_stations.size
+  def current_station
+    @station
+  end
+
+  def forward_station
+    list_of_stations
+    forward_station_index = current_station_index + 1
+    @list_of_stations[forward_station_index] if forward_station_index < list_of_stations.size
   end
 end
