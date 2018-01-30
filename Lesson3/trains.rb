@@ -47,8 +47,12 @@ class Train
     @speed = 0
   end
 
-  def change_speed(speed)
-    @speed += speed if @speed + speed > 0
+  def increase_speed(speed)
+    @speed += speed
+  end
+
+  def decrease_speed(speed)
+    @speed -= speed if @speed - speed > 0
   end
 
   def stop
@@ -76,41 +80,30 @@ class Train
     end
   end
 
-  def list_of_stations
-    @list_of_stations = @route.list_of_stations
-  end
-
   def current_station_index
-    @current_station_index = @list_of_stations.index(@station)
+    @current_station_index = @route.list_of_stations.index(@station)
   end
 
   def move_train(station_index)
     @station.departure(self)
-    @station = @list_of_stations[station_index]
+    @station = @route.list_of_stations[station_index]
     @station.arrival(self)
     current_station_index
   end
 
-  def forward
-    list_of_stations
+  def move_forward
     forward_station_index = @current_station_index + 1
-    if forward_station_index < @list_of_stations.size
-      move_train(forward_station_index)
-    end
+    move_train(forward_station_index) if forward_station_index < @route.list_of_stations.size
   end
 
-  def backward
-    list_of_stations
+  def move_backward
     backward_station_index = @current_station_index - 1
-    if backward_station_index > -1
-      move_train(backward_station_index)
-    end
+    move_train(backward_station_index) if backward_station_index > -1
   end
 
   def backward_station
-    list_of_stations
     backward_station_index = current_station_index - 1
-    @list_of_stations[backward_station_index] if backward_station_index > -1
+    @route.list_of_stations[backward_station_index] if backward_station_index > -1
   end
 
   def current_station
@@ -118,8 +111,7 @@ class Train
   end
 
   def forward_station
-    list_of_stations
     forward_station_index = current_station_index + 1
-    @list_of_stations[forward_station_index] if forward_station_index < list_of_stations.size
+    @route.list_of_stations[forward_station_index] if forward_station_index < @route.list_of_stations.size
   end
 end
