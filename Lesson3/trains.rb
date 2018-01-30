@@ -52,7 +52,11 @@ class Train
   end
 
   def decrease_speed(speed)
-    @speed -= speed if @speed - speed > 0
+    if @speed - speed > 0
+      @speed -= speed
+    else
+      @speed = 0
+    end
   end
 
   def stop
@@ -75,29 +79,27 @@ class Train
     if route.is_a? Route
       @route = route
       @station = @route.list_of_stations.first
-      @current_station_index = 0
       @station.arrival(self)
     end
   end
 
   def current_station_index
-    @current_station_index = @route.list_of_stations.index(@station)
+    @route.list_of_stations.index(@station)
   end
 
   def move_train(station_index)
     @station.departure(self)
     @station = @route.list_of_stations[station_index]
     @station.arrival(self)
-    current_station_index
   end
 
   def move_forward
-    forward_station_index = @current_station_index + 1
+    forward_station_index = current_station_index + 1
     move_train(forward_station_index) if forward_station_index < @route.list_of_stations.size
   end
 
   def move_backward
-    backward_station_index = @current_station_index - 1
+    backward_station_index = current_station_index - 1
     move_train(backward_station_index) if backward_station_index > -1
   end
 
