@@ -1,7 +1,7 @@
 class Train
   attr_reader :number, :carriages, :speed, :type, :route
 
-  def initialize(number, type)
+  def initialize(number)
     @number = number
     @carriages = []
     stop
@@ -83,14 +83,14 @@ class Train
 end
 
 class PassengerTrain < Train
-  def initialize(number, type)
+  def initialize(number)
     super
     @type = :passenger
   end
 end
 
 class CargoTrain < Train
-  def initialize(number, type)
+  def initialize(number)
     super
     @type = :cargo
   end
