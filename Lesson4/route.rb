@@ -3,7 +3,7 @@ class Route
 
   def initialize(first_station, last_station)
     @list_of_stations = []
-    @name = first_station.to_s + " - " + last_station.to_s
+    @name = first_station.name + " - " + last_station.name
     @list_of_stations << first_station << last_station
   end
 

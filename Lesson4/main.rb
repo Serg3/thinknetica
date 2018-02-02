@@ -3,6 +3,11 @@ require_relative 'route'
 require_relative 'train'
 require_relative 'carriage'
 
+$stations = []
+$trains = []
+$routes = []
+$carriages = []
+
 # --- SUBMETHODS ---
 
 def make_choise
@@ -10,8 +15,26 @@ def make_choise
   gets.chomp.to_i
 end
 
-def select_element_from_array(array, equal_parameter)
-  array.select { |element| station == starting_station_name }
+def select_element_from_array_by_name(array, equal_parameter)
+  #puts "Array #{array}."
+  selected_element = array.select { |element| element.name == equal_parameter }
+  #puts "Elements #{selected_element}."
+  if selected_element.any?
+    selected_element.first
+  else
+    puts "Element not found!"
+  end
+end
+
+def select_element_from_array_by_number(array, equal_parameter)
+  #puts "Array #{array}."
+  selected_element = array.select { |element| element.number == equal_parameter }
+  #puts "Elements #{selected_element}."
+  if selected_element.any?
+    selected_element.first
+  else
+    puts "Element not found!"
+  end
 end
 
 # --- MAIN ACTIONS ---
@@ -20,7 +43,7 @@ def create_station
   print 'Enter station name: '
   station_name = gets.chomp
   new_station = Station.new(station_name)
-  stations << new_station
+  $stations << new_station
   puts "Station '#{new_station.name}' created."
 end
 
@@ -35,7 +58,7 @@ def create_train
   new_train = CargoTrain.new(train_number) if train_type == 2
 
   unless new_train.nil?
-    trains << new_train
+    $trains << new_train
     puts "#{new_train.type.capitalize} train №#{new_train.number} created."
   else
     puts "Train not created."
@@ -43,14 +66,17 @@ def create_train
 end
 
 def create_route
+  print "Enter starting station name: "
   starting_station_name = gets.chomp
-  starting_station = select_element_from_array(stations, starting_station_name)
+  starting_station = select_element_from_array_by_name($stations, starting_station_name)
+  print "Enter last station name: "
   last_station_name = gets.chomp
-  last_station = select_element_from_array(stations, last_station_name)
+  last_station = select_element_from_array_by_name($stations, last_station_name)
 
   unless starting_station.nil? && last_station.nil?
     new_route = Route.new(starting_station, last_station)
-    routes << new_route
+    $routes << new_route
+    puts "Route '#{new_route.name}' created."
   end
 end
 
@@ -61,11 +87,11 @@ def create_carriage
   print 'Enter carriage number: '
   carriage_number = gets.chomp
 
-  new_carriage = Passengercarriage.new(train_number) if train_type == 1
-  new_carriage = Cargocarriage.new(train_number) if train_type == 2
+  new_carriage = PassengerCarriage.new(carriage_number) if carriage_type == 1
+  new_carriage = CargoCarriage.new(carriage_number) if carriage_type == 2
 
   unless new_carriage.nil?
-    carriages << new_carriage
+    $carriages << new_carriage
     puts "#{new_carriage.type.capitalize} train №#{new_carriage.number} created."
   else
     puts "Carriage not created."
@@ -73,74 +99,98 @@ def create_carriage
 end
 
 def add_station_to_route
+  print "Enter route name: "
   change_route_name = gets.chomp
-  change_route = select_element_from_array(routes, change_route_name)
+  change_route = select_element_from_array_by_name($routes, change_route_name)
+  print "Enter station name: "
   add_station_name = gets.chomp
-  add_station = select_element_from_array(stations, add_station_name)
+  add_station = select_element_from_array_by_name($stations, add_station_name)
 
   change_route.add_station(add_station) unless add_station.nil? && change_route.nil?
 end
 
 def remove_station_from_route
+  print "Enter route name: "
   change_route_name = gets.chomp
-  change_route = select_element_from_array(routes, change_route_name)
+  change_route = select_element_from_array_by_name($routes, change_route_name)
+  print "Enter station name: "
   remove_station_name = gets.chomp
-  remove_station = select_element_from_array(stations, add_station_name)
+  remove_station = select_element_from_array_by_name($stations, remove_station_name)
 
   change_route.remove_station(remove_station) unless remove_station.nil? && change_route.nil?
 end
 
 def set_route_to_train
+  print "Enter route name: "
   set_route_name = gets.chomp
-  set_route = select_element_from_array(routes, set_route_name)
+  set_route = select_element_from_array_by_name($routes, set_route_name)
+  print "Enter train number: "
   change_train_route = gets.chomp
-  change_train = select_element_from_array(trains, change_train_route)
+  change_train = select_element_from_array_by_number($trains, change_train_route)
 
   change_train.route = set_route unless change_train.nil? && set_route.nil?
 end
 
 def add_carriage_to_train
+  print "Enter carriage number: "
   add_carriage_number = gets.chomp
-  add_carriage = select_element_from_array(carriages, add_carriage_number)
+  add_carriage = select_element_from_array_by_number($carriages, add_carriage_number)
+  print "Enter train number: "
   change_train_carriages = gets.chomp
-  change_train = select_element_from_array(trains, change_train_carriages)
+  change_train = select_element_from_array_by_number($trains, change_train_carriages)
 
-  change_train.add_carriage(add_carriage) unless change_train.nil? && add_carriage.nil? && change_train.type != remove_carriage.type
+  if change_train.nil? || add_carriage.nil? || change_train.type != add_carriage.type
+    puts "Carriage not added!"
+  else
+    change_train.add_carriage(add_carriage)
+    puts "Carriage added to train."
+  end
 end
 
 def remove_carriage_from_train
+  print "Enter carriage number: "
   remove_carriage_number = gets.chomp
-  remove_carriage = select_element_from_array(carriages, remove_carriage_number)
+  remove_carriage = select_element_from_array_by_number($carriages, remove_carriage_number)
+  print "Enter train number: "
   change_train_carriages = gets.chomp
-  change_train = select_element_from_array(trains, change_train_carriages)
+  change_train = select_element_from_array_by_number($trains, change_train_carriages)
 
-  change_train.remove_carriage(remove_carriage) unless change_train.nil? && remove_carriage.nil? && change_train.type != remove_carriage.type
+  if change_train.nil? || remove_carriage.nil? || change_train.type != remove_carriage.type
+    puts "Carriage not removed!"
+  else
+    change_train.remove_carriage(remove_carriage)
+    puts "Carriage removed from train."
+  end
 end
 
 def move_train_forward
+  print "Enter train number: "
   change_train_station = gets.chomp
-  change_train = select_element_from_array(trains, change_train_station)
+  change_train = select_element_from_array_by_number($trains, change_train_station)
 
-  change_train.move_forward
+  change_train.move_forward unless change_train.nil?
 end
 
 def move_train_backward
+  print "Enter train number: "
   change_train_station = gets.chomp
-  change_train = select_element_from_array(trains, change_train_station)
+  change_train = select_element_from_array_by_number($trains, change_train_station)
 
-  change_train.move_backward
+  change_train.move_backward unless change_train.nil?
 end
 
 def list_of_stations_at_route
+  print "Enter route name: "
   route_name = gets.chomp
-  route = select_element_from_array(routes, route_name)
-  puts route.list_of_stations
+  route = select_element_from_array_by_name($routes, route_name)
+  route.list_of_stations.each { |station| puts station.name } unless route.nil?
 end
 
 def list_of_trains_at_station
+  print "Enter station name: "
   station_name = gets.chomp
-  station = select_element_from_array(stations, station_name)
-  puts station.list_of_trains
+  station = select_element_from_array_by_name($stations, station_name)
+  station.list_of_trains.each { |train| puts "Train №#{train.number};" } unless station.nil?
 end
 
 # --- MENU ---
@@ -207,10 +257,5 @@ def menu
     puts 'Good bye!'
   end
 end
-
-stations = []
-trains = []
-routes = []
-carriages = []
 
 menu
