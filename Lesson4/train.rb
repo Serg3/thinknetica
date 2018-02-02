@@ -24,12 +24,11 @@ class Train
   end
 
   def add_carriage(carriage)
-    # чтобы не передать сюда объект класса Train, т. к. у него тоже есть признак type
-    @carriages << carriage if @speed == 0 && carriage.is_a?(Carriage) && self.type == carriage.type
+    @carriages << carriage if @speed == 0
   end
 
   def remove_carriage(carriage)
-    if @carriages.size > 0 && carriage.is_a?(Carriage) && self.type == carriage.type
+    if @carriages.size > 0
       @carriages.delete(carriage) if @speed == 0
     else
       puts "There are no more carriages!"
@@ -37,11 +36,9 @@ class Train
   end
 
   def route=(route)
-    if route.is_a? Route
-      @route = route
-      @station = @route.list_of_stations.first
-      @station.arrival(self)
-    end
+    @route = route
+    @station = @route.list_of_stations.first
+    @station.arrival(self)
   end
 
   def move_forward
