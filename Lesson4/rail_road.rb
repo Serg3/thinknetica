@@ -90,6 +90,8 @@ class RailRoad
     end
   end
 
+  private
+
   # --- SUBMETHODS ---
 
   def make_choise

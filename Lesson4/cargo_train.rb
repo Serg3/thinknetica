@@ -1,8 +1,6 @@
-class CargoTrain < Train
-  def initialize(number)
-    super
-  end
+require_relative 'train'
 
+class CargoTrain < Train
   def add_carriage(carriage)
     if @speed == 0 && carriage.class == CargoCarriage
       @carriages << carriage
