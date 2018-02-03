@@ -1,5 +1,4 @@
-require_relative 'actions'
-require_relative 'menu'
+require_relative 'rail_road'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
@@ -9,5 +8,5 @@ require_relative 'carriage'
 require_relative 'passenger_carriage'
 require_relative 'cargo_carriage'
 
-menu = Menu.new
-menu.menu
+rail_controller = RailRoad.new
+rail_controller.menu
