@@ -1,5 +1,5 @@
 class Train
-  attr_reader :number, :carriages, :speed, :type, :route
+  attr_reader :number, :carriages, :speed, :route
 
   def initialize(number)
     @number = number
@@ -21,10 +21,6 @@ class Train
 
   def stop
     @speed = 0
-  end
-
-  def add_carriage(carriage)
-    @carriages << carriage if @speed == 0
   end
 
   def remove_carriage(carriage)
@@ -76,19 +72,5 @@ class Train
 
   def current_station_index
     @route.list_of_stations.index(@station)
-  end
-end
-
-class PassengerTrain < Train
-  def initialize(number)
-    super
-    @type = :passenger
-  end
-end
-
-class CargoTrain < Train
-  def initialize(number)
-    super
-    @type = :cargo
   end
 end
