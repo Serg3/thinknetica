@@ -23,12 +23,15 @@ class Train
     @speed = 0
   end
 
-  def remove_carriage(carriage)
-    if @carriages.size > 0
-      @carriages.delete(carriage) if @speed == 0
+  def add_carriage(carriage)
+    if @speed == 0 && comparsion_of_types(carriage)
+      @carriages << carriage
     else
-      puts "There are no more carriages!"
     end
+  end
+
+  def remove_carriage(carriage)
+    @carriages.delete(carriage) if @speed == 0 if @carriages.size > 0
   end
 
   def route=(route)
