@@ -1,10 +1,19 @@
+require_relative 'modules'
+
 class Train
+  include Manufacturer
+  include InstanceCounter
+
   attr_reader :number, :carriages, :speed, :route
+
+  @@trains = {}
 
   def initialize(number)
     @number = number
     @carriages = []
     stop
+    @@trains[number] = self
+    register_instance
   end
 
   def increase_speed(speed)
@@ -72,5 +81,9 @@ class Train
 
   def current_station_index
     @route.list_of_stations.index(@station)
+  end
+
+  def self.find(number)
+    @@trains[number]
   end
 end

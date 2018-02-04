@@ -25,12 +25,14 @@ class RailRoad
       puts '1. Create station.'
       puts '2. List of trains at station.'
       puts '3. List of stations.'
+      puts '4. ALL stations from CLASS-METHOD.'
       choise = make_choise
 
       case choise
       when 1 then create_station
       when 2 then list_of_trains_at_station
       when 3 then puts_list_of_stations
+      when 4 then Station.all.each { |station| puts station.name }
       end
 
       menu
@@ -132,7 +134,7 @@ class RailRoad
   def create_train
     puts 'Types: 1 - passenger, 2 - cargo.'
     print 'Select train type: '
-    train_type = gets.chomp.to_i
+    train_type = gets.chomp
     print 'Enter train number: '
     train_number = gets.chomp
 
