@@ -24,10 +24,7 @@ class Train
   end
 
   def add_carriage(carriage)
-    if @speed == 0 && comparsion_of_types(carriage)
-      @carriages << carriage
-    else
-    end
+    @carriages << carriage if @speed == 0 && comparsion_of_types(carriage)
   end
 
   def remove_carriage(carriage)
