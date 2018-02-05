@@ -1,7 +1,3 @@
-module Manufacturer
-  attr_accessor :company
-end
-
 module InstanceCounter
   def self.included(base)
     base.extend ClassMethods

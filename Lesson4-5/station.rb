@@ -6,6 +6,10 @@ class Station
 
   @@stations = []
 
+  def self.all
+    @@stations
+  end
+
   def initialize(name)
     @name = name
     @list_of_trains = []
@@ -23,9 +27,5 @@ class Station
 
   def list_of_trains_by_type(type = nil)
     @list_of_trains.select { |train| train.type == type } unless type.nil?
-  end
-
-  def self.all
-    @@stations
   end
 end

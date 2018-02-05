@@ -1,4 +1,5 @@
-require_relative 'modules'
+require_relative 'manufacturer'
+require_relative 'instance_counter'
 
 class Train
   include Manufacturer
@@ -7,6 +8,10 @@ class Train
   attr_reader :number, :carriages, :speed, :route
 
   @@trains = {}
+
+  def self.find(number)
+    @@trains[number]
+  end
 
   def initialize(number)
     @number = number
@@ -33,7 +38,7 @@ class Train
   end
 
   def add_carriage(carriage)
-    @carriages << carriage if @speed == 0 && comparsion_of_types(carriage)
+    @carriages << carriage if @speed == 0 && right_type?(carriage)
   end
 
   def remove_carriage(carriage)
@@ -81,9 +86,5 @@ class Train
 
   def current_station_index
     @route.list_of_stations.index(@station)
-  end
-
-  def self.find(number)
-    @@trains[number]
   end
 end
