@@ -9,8 +9,6 @@ module InstanceCounter
   end
 
   module InstanceMethods
-    #self.class.instances ||= 0
-
     private
 
     def register_instance

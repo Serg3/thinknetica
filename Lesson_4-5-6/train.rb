@@ -1,9 +1,11 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'validations'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validation
 
   attr_reader :number, :carriages, :speed, :route
 
@@ -14,6 +16,7 @@ class Train
   end
 
   def initialize(number)
+    validation!(number)
     @number = number
     @carriages = []
     stop
@@ -76,6 +79,7 @@ class Train
   end
 
   # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса
+
   private
 
   def move_train(station_index)

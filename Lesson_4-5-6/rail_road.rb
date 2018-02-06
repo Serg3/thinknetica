@@ -125,44 +125,33 @@ class RailRoad
 
   def create_station
     print 'Enter station name: '
-    station_name = gets.chomp
-    new_station = Station.new(station_name)
-    @stations << new_station
-    puts "Station '#{new_station.name}' created."
+    @stations << Station.new(gets.chomp.strip)
+    puts "Station '#{@stations.last.name}' created."
   end
 
   def create_train
     puts 'Types: 1 - passenger, 2 - cargo.'
     print 'Select train type: '
-    train_type = gets.chomp
+    train_type = gets.chomp.to_i
     print 'Enter train number: '
-    train_number = gets.chomp
+    train_number = gets.chomp.strip
 
-    new_train = PassengerTrain.new(train_number) if train_type == 1
-    new_train = CargoTrain.new(train_number) if train_type == 2
+    @trains << Train.type_validation!(train_number, train_type)
 
-    unless new_train.nil?
-      @trains << new_train
-      puts "#{new_train.class} №#{new_train.number} created."
-    else
-      puts "Train not created."
-    end
+    puts "#{@trains.last.class} №#{@trains.last.number} created."
   end
 
   def create_route
     puts_list_of_stations
     print "Enter number of starting station: "
     starting_station_index = gets.chomp.to_i
-    starting_station = @stations[starting_station_index - 1]
+    starting_station = @stations[starting_station_index - 1] if starting_station_index > 0
     print "Enter number of last station: "
     last_station_index = gets.chomp.to_i
-    last_station = @stations[last_station_index - 1]
+    last_station = @stations[last_station_index - 1] if last_station_index > 0
 
-    unless starting_station.nil? && last_station.nil?
-      new_route = Route.new(starting_station, last_station)
-      @routes << new_route
-      puts "Route '#{new_route.name}' created."
-    end
+    @routes << Route.new(starting_station, last_station)
+    puts "Route '#{@routes.last.name}' created."
   end
 
   def create_carriage
@@ -170,17 +159,11 @@ class RailRoad
     print 'Select carriage type: '
     carriage_type = gets.chomp.to_i
     print 'Enter carriage number: '
-    carriage_number = gets.chomp
+    carriage_number = gets.chomp.strip
 
-    new_carriage = PassengerCarriage.new(carriage_number) if carriage_type == 1
-    new_carriage = CargoCarriage.new(carriage_number) if carriage_type == 2
+    @carriages << Carriage.type_validation!(carriage_number, carriage_type)
 
-    unless new_carriage.nil?
-      @carriages << new_carriage
-      puts "#{new_carriage.class} №#{new_carriage.number} created."
-    else
-      puts "Carriage not created."
-    end
+    puts "#{@carriages.last.class} №#{@carriages.last.number} created."
   end
 
   def add_station_to_route
