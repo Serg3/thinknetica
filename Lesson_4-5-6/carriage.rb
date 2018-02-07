@@ -10,7 +10,6 @@ class Carriage
   attr_reader :number
 
   def initialize(number)
-    validation!(number)
     @number = number
     register_instance
   end

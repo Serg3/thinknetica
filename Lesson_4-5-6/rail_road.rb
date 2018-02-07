@@ -124,46 +124,92 @@ class RailRoad
   # --- MAIN ACTIONS ---
 
   def create_station
-    print 'Enter station name: '
-    @stations << Station.new(gets.chomp.strip)
-    puts "Station '#{@stations.last.name}' created."
-  end
+    attempt = 0
+    begin
+      print 'Enter station name: '
+      station_name = gets.chomp.strip
 
-  def create_train
-    puts 'Types: 1 - passenger, 2 - cargo.'
-    print 'Select train type: '
-    train_type = gets.chomp.to_i
-    print 'Enter train number: '
-    train_number = gets.chomp.strip
-
-    @trains << Train.type_validation!(train_number, train_type)
-
-    puts "#{@trains.last.class} №#{@trains.last.number} created."
+      if Station.valid?(station_name)
+        @stations << Station.new(station_name)
+        puts "Station '#{@stations.last.name}' created."
+      else
+        raise ArgumentError.new('!!!Station name must have at least one character!!!')
+      end
+    rescue
+      attempt += 1
+      puts "You must enter some name!"
+      retry if attempt < 3
+    end
   end
 
   def create_route
-    puts_list_of_stations
-    print "Enter number of starting station: "
-    starting_station_index = gets.chomp.to_i
-    starting_station = @stations[starting_station_index - 1] if starting_station_index > 0
-    print "Enter number of last station: "
-    last_station_index = gets.chomp.to_i
-    last_station = @stations[last_station_index - 1] if last_station_index > 0
+    attempt = 0
+    begin
+      puts_list_of_stations
+      print "Enter number of starting station: "
+      starting_station_index = gets.chomp.to_i
+      starting_station = @stations[starting_station_index - 1] if starting_station_index > 0
+      print "Enter number of last station: "
+      last_station_index = gets.chomp.to_i
+      last_station = @stations[last_station_index - 1] if last_station_index > 0
 
-    @routes << Route.new(starting_station, last_station)
-    puts "Route '#{@routes.last.name}' created."
+      if Route.valid?(starting_station, last_station)
+        @routes << Route.new(starting_station, last_station)
+        puts "Route '#{@routes.last.name}' created."
+      else
+        raise ArgumentError.new('Route name must have at least two stations!')
+      end
+    rescue
+      attempt += 1
+      puts "You must to choose stations from list!"
+      retry if attempt < 3
+    end
+  end
+
+  def create_train
+    attempt = 0
+    begin
+      puts 'Types: 1 - passenger, 2 - cargo.'
+      print 'Select train type: '
+      train_type = gets.chomp.to_i
+      print 'Enter train number: '
+      train_number = gets.chomp.strip
+
+      if Train.valid?(train_number, train_type)
+        @trains << PassengerTrain.new(train_number) if train_type == 1
+        @trains << CargoTrain.new(train_number) if train_type == 2
+        puts "#{@trains.last.class} №#{@trains.last.number} created."
+      else
+        raise ArgumentError.new('!!!Some argument is wrong!!!')
+      end
+    rescue
+      attempt += 1
+      puts "You must enter right arguments!"
+      retry if attempt < 3
+    end
   end
 
   def create_carriage
-    puts 'Types: 1 - passenger, 2 - cargo.'
-    print 'Select carriage type: '
-    carriage_type = gets.chomp.to_i
-    print 'Enter carriage number: '
-    carriage_number = gets.chomp.strip
+    attempt = 0
+    begin
+      puts 'Types: 1 - passenger, 2 - cargo.'
+      print 'Select carriage type: '
+      carriage_type = gets.chomp.to_i
+      print 'Enter carriage number: '
+      carriage_number = gets.chomp.strip
 
-    @carriages << Carriage.type_validation!(carriage_number, carriage_type)
-
-    puts "#{@carriages.last.class} №#{@carriages.last.number} created."
+      if Carriage.valid?(carriage_number, carriage_type)
+        @carriages << PassengerCarriage.new(carriage_number) if carriage_type == 1
+        @trains << CargoCarriage.new(carriage_number) if carriage_type == 2
+        puts "#{@carriages.last.class} №#{@carriages.last.number} created."
+      else
+        raise ArgumentError.new('!!!Some argument is wrong!!!')
+      end
+    rescue
+      attempt += 1
+      puts "You must enter right arguments!"
+      retry if attempt < 3
+    end
   end
 
   def add_station_to_route

@@ -1,27 +1,20 @@
 module Validation
   def self.included(base)
     base.extend ClassMethods
-    base.send :include, InstanceMethods
+    #base.send :include, InstanceMethods
   end
+
+  TRAIN_NUMBER_FORMAT = /[\w&&[^_]]{3}-*\w{2}/
 
   module ClassMethods
-    def type_validation!(number, type)
-      if type == 1
-        PassengerTrain.new(number)
-      elsif type == 2
-        CargoTrain.new(number)
+    def valid?(number, type)
+      if number.nil? || number.length.zero? || (type != 1 && type != 2)
+        false
       else
-        raise ArgumentError.new("You must to choose Passenger or Cargo type!")
-      end
-    end
-  end
-
-  module InstanceMethods
-    private
-
-    def validation!(number)
-      if number.nil? || number.size.zero?
-        raise ArgumentError.new('Train number must have at least one character!')
+        if self.inspect == 'Train'
+          return false if number !~ TRAIN_NUMBER_FORMAT
+        end
+        true
       end
     end
   end

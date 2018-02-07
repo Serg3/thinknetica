@@ -16,7 +16,6 @@ class Train
   end
 
   def initialize(number)
-    validation!(number)
     @number = number
     @carriages = []
     stop
