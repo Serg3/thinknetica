@@ -129,12 +129,9 @@ class RailRoad
       print 'Enter station name: '
       station_name = gets.chomp.strip
 
-      if Station.valid?(station_name)
-        @stations << Station.new(station_name)
-        puts "Station '#{@stations.last.name}' created."
-      else
-        raise ArgumentError.new('!!!Station name must have at least one character!!!')
-      end
+      @stations << Station.new(station_name)
+      puts "Station '#{@stations.last.name}' created."
+
     rescue
       attempt += 1
       puts "You must enter some name!"
@@ -153,12 +150,9 @@ class RailRoad
       last_station_index = gets.chomp.to_i
       last_station = @stations[last_station_index - 1] if last_station_index > 0
 
-      if Route.valid?(starting_station, last_station)
-        @routes << Route.new(starting_station, last_station)
-        puts "Route '#{@routes.last.name}' created."
-      else
-        raise ArgumentError.new('Route name must have at least two stations!')
-      end
+      @routes << Route.new(starting_station, last_station)
+      puts "Route '#{@routes.last.name}' created."
+
     rescue
       attempt += 1
       puts "You must to choose stations from list!"
@@ -175,13 +169,10 @@ class RailRoad
       print 'Enter train number: '
       train_number = gets.chomp.strip
 
-      if Train.valid?(train_number, train_type)
-        @trains << PassengerTrain.new(train_number) if train_type == 1
-        @trains << CargoTrain.new(train_number) if train_type == 2
-        puts "#{@trains.last.class} №#{@trains.last.number} created."
-      else
-        raise ArgumentError.new('!!!Some argument is wrong!!!')
-      end
+      @trains << PassengerTrain.new(train_number, train_type) if train_type == 1
+      @trains << CargoTrain.new(train_number, train_type) if train_type == 2
+      puts "#{@trains.last.class} №#{@trains.last.number} created."
+
     rescue
       attempt += 1
       puts "You must enter right arguments!"
@@ -198,13 +189,10 @@ class RailRoad
       print 'Enter carriage number: '
       carriage_number = gets.chomp.strip
 
-      if Carriage.valid?(carriage_number, carriage_type)
-        @carriages << PassengerCarriage.new(carriage_number) if carriage_type == 1
-        @trains << CargoCarriage.new(carriage_number) if carriage_type == 2
-        puts "#{@carriages.last.class} №#{@carriages.last.number} created."
-      else
-        raise ArgumentError.new('!!!Some argument is wrong!!!')
-      end
+      @carriages << PassengerCarriage.new(carriage_number, carriage_type) if carriage_type == 1
+      @trains << CargoCarriage.new(carriage_number, carriage_type) if carriage_type == 2
+      puts "#{@carriages.last.class} №#{@carriages.last.number} created."
+
     rescue
       attempt += 1
       puts "You must enter right arguments!"

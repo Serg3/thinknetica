@@ -1,6 +1,5 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
-require_relative 'validations'
 require_relative 'rail_road'
 require_relative 'station'
 require_relative 'route'
@@ -12,7 +11,7 @@ require_relative 'passenger_carriage'
 require_relative 'cargo_carriage'
 
 p "Train count: #{PassengerTrain.instances}"
-train = PassengerTrain.new(555)
+train = PassengerTrain.new('555-gg', 1)
 p "Train count: #{PassengerTrain.instances}"
 p "Train company: #{train.company}"
 train.company = "Train company"
@@ -20,12 +19,12 @@ p "Train company: #{train.company}"
 
 p "-----"
 
-p PassengerTrain.find(555)
+p PassengerTrain.find('555')
 
 p "-----"
 
 p "Carriage count: #{CargoCarriage.instances}"
-carriage = CargoCarriage.new(555)
+carriage = CargoCarriage.new('555', 2)
 p "Carriage count: #{CargoCarriage.instances}"
 p "Carriage company: #{carriage.company}"
 carriage.company = "Carriage company"

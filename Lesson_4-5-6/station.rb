@@ -10,13 +10,9 @@ class Station
     @@stations
   end
 
-  def self.valid?(name)
-    return false if name.nil? || name.length.zero?
-    true
-  end
-
   def initialize(name)
     @name = name
+    validation!
     @list_of_trains = []
     @@stations << self
     register_instance
@@ -32,5 +28,16 @@ class Station
 
   def list_of_trains_by_type(type = nil)
     @list_of_trains.select { |train| train.type == type } unless type.nil?
+  end
+
+  def valid?
+    return false if name.nil? || name.length.zero?
+    true
+  end
+
+  private
+
+  def validation!
+    raise ArgumentError.new('!!!Station name must have at least one character!!!') unless valid?
   end
 end

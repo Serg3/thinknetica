@@ -1,13 +1,13 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
-require_relative 'validations'
 
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validation
 
-  attr_reader :number, :carriages, :speed, :route
+  TRAIN_NUMBER_FORMAT = /[\w&&[^_]]{3}-*\w{2}/
+
+  attr_reader :number, :type, :carriages, :speed, :route
 
   @@trains = {}
 
@@ -15,8 +15,10 @@ class Train
     @@trains[number]
   end
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
+    @type = type
+    validation!
     @carriages = []
     stop
     @@trains[number] = self
@@ -77,6 +79,16 @@ class Train
     @route.list_of_stations[forward_station_index] if forward_station_index < @route.list_of_stations.size
   end
 
+  def valid?
+    if number.nil? || number.length.zero? || (type != 1 && type != 2)
+      false
+    else
+      return false if number !~ TRAIN_NUMBER_FORMAT
+      @number = TRAIN_NUMBER_FORMAT.match number
+      true
+    end
+  end
+
   # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса
 
   private
@@ -89,5 +101,9 @@ class Train
 
   def current_station_index
     @route.list_of_stations.index(@station)
+  end
+
+  def validation!
+    raise ArgumentError.new('!!!Some argument is wrong!!!') unless valid?
   end
 end

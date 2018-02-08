@@ -1,16 +1,27 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
-require_relative 'validations'
 
 class Carriage
   include Manufacturer
   include InstanceCounter
-  include Validation
 
-  attr_reader :number
+  attr_reader :number, :type
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
+    @type = type
+    validation!
     register_instance
+  end
+
+  def valid?
+    return false if number.nil? || number.length.zero? || (type != 1 && type != 2)
+    true
+  end
+
+  private
+
+  def validation!
+    raise ArgumentError.new('!!!Some argument is wrong!!!') unless valid?
   end
 end
