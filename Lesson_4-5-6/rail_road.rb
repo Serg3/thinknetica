@@ -207,14 +207,14 @@ class RailRoad
       puts_list_of_routes
       print "Enter route index: "
       change_route_index = gets.chomp.to_i
-      change_route = @routes[change_route_index - 1]
+      change_route = @routes[change_route_index - 1] if change_route_index > 0
 
       puts_list_of_stations
       print "Enter station index: "
       add_station_index = gets.chomp.to_i
-      add_station = @stations[add_station_index - 1]
+      add_station = @stations[add_station_index - 1] if add_station_index > 0
 
-      change_route.add_station(add_station) unless add_station.nil? && change_route.nil?
+      change_route.add_station(add_station) if add_station && change_route && change_route.clone.add_station(add_station)
 
     rescue
       attempt += 1
