@@ -21,7 +21,7 @@ class Route
   end
 
   def valid?
-    list_of_stations.each { |station| return false if station.class != Station || station.name.length.zero? }
+    list_of_stations.each { |station| return false if station.class != Station }
     true
   end
 
