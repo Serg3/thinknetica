@@ -5,7 +5,7 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  TRAIN_NUMBER_FORMAT = /[\w&&[^_]]{3}-*\w{2}/
+  TRAIN_NUMBER_FORMAT = /^[\w&&[^_]]{3}-*{1}\w{2}$/
 
   attr_reader :number, :type, :carriages, :speed, :route
 
@@ -80,13 +80,7 @@ class Train
   end
 
   def valid?
-    if number.nil? || number.length.zero? || (type != 1 && type != 2)
-      false
-    else
-      return false if number !~ TRAIN_NUMBER_FORMAT
-      @number = TRAIN_NUMBER_FORMAT.match number
-      true
-    end
+    number =~ TRAIN_NUMBER_FORMAT && (type == 1 || type == 2)
   end
 
   # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса

@@ -171,6 +171,7 @@ class RailRoad
 
       @trains << PassengerTrain.new(train_number, train_type) if train_type == 1
       @trains << CargoTrain.new(train_number, train_type) if train_type == 2
+      raise ArgumentError.new('!!!Type argument is wrong!!!') if train_type != 1 && train_type != 2
       puts "#{@trains.last.class} №#{@trains.last.number} created."
 
     rescue
@@ -201,17 +202,25 @@ class RailRoad
   end
 
   def add_station_to_route
-    puts_list_of_routes
-    print "Enter route index: "
-    change_route_index = gets.chomp.to_i
-    change_route = @routes[change_route_index - 1]
+    attempt = 0
+    begin
+      puts_list_of_routes
+      print "Enter route index: "
+      change_route_index = gets.chomp.to_i
+      change_route = @routes[change_route_index - 1]
 
-    puts_list_of_stations
-    print "Enter station index: "
-    add_station_index = gets.chomp.to_i
-    add_station = @stations[add_station_index - 1]
+      puts_list_of_stations
+      print "Enter station index: "
+      add_station_index = gets.chomp.to_i
+      add_station = @stations[add_station_index - 1]
 
-    change_route.add_station(add_station) unless add_station.nil? && change_route.nil?
+      change_route.add_station(add_station) unless add_station.nil? && change_route.nil?
+
+    rescue
+      attempt += 1
+      puts "You must to choose station from list!"
+      retry if attempt < 3
+    end
   end
 
   def remove_station_from_route
