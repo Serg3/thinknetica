@@ -16,7 +16,8 @@ class RailRoad
     puts '2. Route actions.'
     puts '3. Train actions.'
     puts '4. Carriage actions.'
-    puts '5. Enter something else for exit.'
+    puts '5. MODULE 8 METHODS.'
+    puts 'Enter something else for exit.'
     puts '------------------------------'
     choise = make_choise
 
@@ -87,8 +88,40 @@ class RailRoad
       end
 
       menu
+    when 5
+      puts '1. Take space in carriage.'
+      puts '2. Free space in carriage.'
+      puts '3. Taken space in carriage.'
+      puts '4. Trains at station via block.'
+      puts '5. Carriages at train via block.'
+      puts '6. ALL stations with trains and their carriages.'
+
+      choise = make_choise
+
+      case choise
+      when 1 then take_space_in_carriage
+      when 2 then puts_free_space_in_carriage
+      when 3 then puts_taken_space_in_carriage
+      when 4 then trains_at_station_via_block
+      when 5 then carriages_at_train_via_block
+      when 6 then all_stations_with_trains_carriages
+      end
+
+      menu
     else
       puts 'Good bye!'
+    end
+  end
+
+  def all_stations_with_trains_carriages
+    @stations.each do |station|
+      p "#{station.name} -----------------------"
+
+      station.list_of_trains_with_block do |train|
+        p "  #{train.class} №#{train.number} with #{train.carriages.size} carriages:"
+
+        train.list_of_carriages_with_block { |carriage| p "    #{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
+      end
     end
   end
 
@@ -189,9 +222,11 @@ class RailRoad
       carriage_type = gets.chomp.to_i
       print 'Enter carriage number: '
       carriage_number = gets.chomp.strip
+      print 'Enter carriage space: '
+      carriage_space = gets.chomp
 
-      @carriages << PassengerCarriage.new(carriage_number, carriage_type) if carriage_type == 1
-      @trains << CargoCarriage.new(carriage_number, carriage_type) if carriage_type == 2
+      @carriages << PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i) if carriage_type == 1
+      @carriages << CargoCarriage.new(carriage_number, carriage_type, carriage_space.to_f) if carriage_type == 2
       puts "#{@carriages.last.class} №#{@carriages.last.number} created."
 
     rescue
@@ -324,5 +359,58 @@ class RailRoad
     station = @stations[station_index - 1]
 
     station.list_of_trains.map.with_index { |train, index| puts "#{index + 1} - #{train.class} №#{train.number}" } unless station.nil?
+  end
+
+  # MODULE 8 METHODS
+
+  def take_space_in_carriage
+    puts_list_of_carriages
+    print "Enter carriage index: "
+    carriage_index = gets.chomp.to_i
+    carriage = @carriages[carriage_index - 1]
+
+    if carriage.class == PassengerCarriage
+      carriage.add_passenger_to_carriage
+    elsif carriage.class == CargoCarriage
+      print "Enter taken volume: "
+      volume = gets.chomp.to_f
+      carriage.load_carriage(volume) unless volume < 0
+    end
+  end
+
+  def puts_free_space_in_carriage
+    puts_list_of_carriages
+    print "Enter carriage index: "
+    carriage_index = gets.chomp.to_i
+    carriage = @carriages[carriage_index - 1]
+
+    p "Free space: #{carriage.free_space}"
+  end
+
+  def puts_taken_space_in_carriage
+    puts_list_of_carriages
+    print "Enter carriage index: "
+    carriage_index = gets.chomp.to_i
+    carriage = @carriages[carriage_index - 1]
+
+    p "Taken space: #{carriage.taken_space}"
+  end
+
+  def trains_at_station_via_block
+    puts_list_of_stations
+    print "Enter station index: "
+    station_index = gets.chomp.to_i
+    station = @stations[station_index - 1] if station_index > 0
+
+    station.list_of_trains_with_block { |train| p "#{train.class} №#{train.number}" }
+  end
+
+  def carriages_at_train_via_block
+    puts_list_of_trains
+    print "Enter train index: "
+    train_index = gets.chomp.to_i
+    train = @trains[train_index - 1] if train_index > 0
+
+    train.list_of_carriages_with_block { |carriage| p "#{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
   end
 end

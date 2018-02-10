@@ -35,6 +35,10 @@ class Station
     true
   end
 
+  def list_of_trains_with_block(&block)
+    list_of_trains.each { |train| block.call(train) }
+  end
+
   private
 
   def validation!

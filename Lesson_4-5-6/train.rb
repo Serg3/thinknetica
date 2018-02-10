@@ -83,6 +83,10 @@ class Train
     number =~ TRAIN_NUMBER_FORMAT && (type == 1 || type == 2)
   end
 
+  def list_of_carriages_with_block(&block)
+    carriages.each { |carriage| block.call(carriage) }
+  end
+
   # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса
 
   private
