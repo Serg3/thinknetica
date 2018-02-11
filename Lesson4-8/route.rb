@@ -5,7 +5,7 @@ class Route
 
   def initialize(first_station, last_station)
     @list_of_stations = []
-    @name = first_station.name + " - " + last_station.name
+    @name = first_station.name + ' - ' + last_station.name
     @list_of_stations << first_station << last_station
     validation!
     register_instance
@@ -28,6 +28,6 @@ class Route
   private
 
   def validation!
-    raise ArgumentError.new('Route name must have only station objects!') unless valid?
+    raise ArgumentError, 'Route name must have only station objects!' unless valid?
   end
 end

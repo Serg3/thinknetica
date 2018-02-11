@@ -46,7 +46,7 @@ class Train
   end
 
   def remove_carriage(carriage)
-    @carriages.delete(carriage) if @speed == 0 if @carriages.size > 0
+    @carriages.delete(carriage) if !@carriages.empty? && (@speed == 0)
   end
 
   def route=(route)
@@ -83,8 +83,8 @@ class Train
     number =~ TRAIN_NUMBER_FORMAT && (type == 1 || type == 2)
   end
 
-  def list_of_carriages_with_block(&block)
-    carriages.each { |carriage| block.call(carriage) }
+  def list_of_carriages_with_block
+    carriages.each { |carriage| yield(carriage) }
   end
 
   # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса
@@ -102,6 +102,6 @@ class Train
   end
 
   def validation!
-    raise ArgumentError.new('!!!Some argument is wrong!!!') unless valid?
+    raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
   end
 end

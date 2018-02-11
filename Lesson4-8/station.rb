@@ -35,13 +35,13 @@ class Station
     true
   end
 
-  def list_of_trains_with_block(&block)
-    list_of_trains.each { |train| block.call(train) }
+  def list_of_trains_with_block
+    list_of_trains.each { |train| yield(train) }
   end
 
   private
 
   def validation!
-    raise ArgumentError.new('!!!Station name must have at least one character!!!') unless valid?
+    raise ArgumentError, '!!!Station name must have at least one character!!!' unless valid?
   end
 end

@@ -34,6 +34,6 @@ class Carriage
   attr_writer :free_space
 
   def validation!
-    raise ArgumentError.new('!!!Some argument is wrong!!!') unless valid?
+    raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
   end
 end

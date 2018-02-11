@@ -135,22 +135,22 @@ class RailRoad
   end
 
   def puts_list_of_stations
-    puts "List of stations:"
+    puts 'List of stations:'
     @stations.map.with_index { |station, index| puts "#{index + 1} - #{station.name}" }
   end
 
   def puts_list_of_routes
-    puts "List of routes:"
+    puts 'List of routes:'
     @routes.map.with_index { |route, index| puts "#{index + 1} - #{route.name}" }
   end
 
   def puts_list_of_trains
-    puts "List of trains:"
+    puts 'List of trains:'
     @trains.map.with_index { |train, index| puts "#{index + 1} - #{train.class} №#{train.number}" }
   end
 
   def puts_list_of_carriages
-    puts "List of carriages:"
+    puts 'List of carriages:'
     @carriages.map.with_index { |carriage, index| puts "#{index + 1} - #{carriage.class} №#{carriage.number}" }
   end
 
@@ -164,10 +164,9 @@ class RailRoad
 
       @stations << Station.new(station_name)
       puts "Station '#{@stations.last.name}' created."
-
-    rescue
+    rescue StandardError
       attempt += 1
-      puts "You must enter some name!"
+      puts 'You must enter some name!'
       retry if attempt < 3
     end
   end
@@ -176,19 +175,18 @@ class RailRoad
     attempt = 0
     begin
       puts_list_of_stations
-      print "Enter number of starting station: "
+      print 'Enter number of starting station: '
       starting_station_index = gets.chomp.to_i
       starting_station = @stations[starting_station_index - 1] if starting_station_index > 0
-      print "Enter number of last station: "
+      print 'Enter number of last station: '
       last_station_index = gets.chomp.to_i
       last_station = @stations[last_station_index - 1] if last_station_index > 0
 
       @routes << Route.new(starting_station, last_station)
       puts "Route '#{@routes.last.name}' created."
-
-    rescue
+    rescue StandardError
       attempt += 1
-      puts "You must to choose stations from list!"
+      puts 'You must to choose stations from list!'
       retry if attempt < 3
     end
   end
@@ -204,12 +202,11 @@ class RailRoad
 
       @trains << PassengerTrain.new(train_number, train_type) if train_type == 1
       @trains << CargoTrain.new(train_number, train_type) if train_type == 2
-      raise ArgumentError.new('!!!Type argument is wrong!!!') if train_type != 1 && train_type != 2
+      raise ArgumentError, '!!!Type argument is wrong!!!' if train_type != 1 && train_type != 2
       puts "#{@trains.last.class} №#{@trains.last.number} created."
-
-    rescue
+    rescue StandardError
       attempt += 1
-      puts "You must enter right arguments!"
+      puts 'You must enter right arguments!'
       retry if attempt < 3
     end
   end
@@ -228,10 +225,9 @@ class RailRoad
       @carriages << PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i) if carriage_type == 1
       @carriages << CargoCarriage.new(carriage_number, carriage_type, carriage_space.to_f) if carriage_type == 2
       puts "#{@carriages.last.class} №#{@carriages.last.number} created."
-
-    rescue
+    rescue StandardError
       attempt += 1
-      puts "You must enter right arguments!"
+      puts 'You must enter right arguments!'
       retry if attempt < 3
     end
   end
@@ -240,33 +236,32 @@ class RailRoad
     attempt = 0
     begin
       puts_list_of_routes
-      print "Enter route index: "
+      print 'Enter route index: '
       change_route_index = gets.chomp.to_i
       change_route = @routes[change_route_index - 1] if change_route_index > 0
 
       puts_list_of_stations
-      print "Enter station index: "
+      print 'Enter station index: '
       add_station_index = gets.chomp.to_i
       add_station = @stations[add_station_index - 1] if add_station_index > 0
 
       change_route.add_station(add_station) if add_station && change_route && change_route.clone.add_station(add_station)
-
-    rescue
+    rescue StandardError
       attempt += 1
-      puts "You must to choose station from list!"
+      puts 'You must to choose station from list!'
       retry if attempt < 3
     end
   end
 
   def remove_station_from_route
     puts_list_of_routes
-    print "Enter route index: "
+    print 'Enter route index: '
     change_route_index = gets.chomp.to_i
     change_route = @routes[change_route_index - 1]
 
-    puts "List of stations at route:"
+    puts 'List of stations at route:'
     change_route.list_of_stations.map.with_index { |station, index| puts "#{index + 1} - #{station.name}" }
-    print "Enter station index: "
+    print 'Enter station index: '
     remove_station_index = gets.chomp.to_i
     remove_station = change_route.list_of_stations[remove_station_index - 1]
 
@@ -275,12 +270,12 @@ class RailRoad
 
   def set_route_to_train
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
     puts_list_of_routes
-    print "Enter route index: "
+    print 'Enter route index: '
     set_route_index = gets.chomp.to_i
     set_route = @routes[set_route_index - 1]
 
@@ -289,12 +284,12 @@ class RailRoad
 
   def add_carriage_to_train
     puts_list_of_carriages
-    print "Enter carriage index: "
+    print 'Enter carriage index: '
     add_carriage_index = gets.chomp.to_i
     add_carriage = @carriages[add_carriage_index - 1]
 
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
@@ -303,13 +298,13 @@ class RailRoad
 
   def remove_carriage_from_train
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
-    puts "List of carriages at train:"
+    puts 'List of carriages at train:'
     change_train.carriages.map.with_index { |carriage, index| puts "#{index + 1} - #{carriage.number}" }
-    print "Enter carriage index: "
+    print 'Enter carriage index: '
     remove_carriage_index = gets.chomp.to_i
     remove_carriage = change_train.carriages[remove_carriage_index - 1]
 
@@ -318,7 +313,7 @@ class RailRoad
 
   def puts_list_of_carriages_at_train
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
@@ -327,7 +322,7 @@ class RailRoad
 
   def move_train_forward
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
@@ -336,7 +331,7 @@ class RailRoad
 
   def move_train_backward
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     change_train_index = gets.chomp.to_i
     change_train = @trains[change_train_index - 1]
 
@@ -345,7 +340,7 @@ class RailRoad
 
   def list_of_stations_at_route
     puts_list_of_routes
-    print "Enter route index: "
+    print 'Enter route index: '
     change_route_index = gets.chomp.to_i
     change_route = @routes[change_route_index - 1]
 
@@ -354,7 +349,7 @@ class RailRoad
 
   def list_of_trains_at_station
     puts_list_of_stations
-    print "Enter station index: "
+    print 'Enter station index: '
     station_index = gets.chomp.to_i
     station = @stations[station_index - 1]
 
@@ -365,14 +360,14 @@ class RailRoad
 
   def take_space_in_carriage
     puts_list_of_carriages
-    print "Enter carriage index: "
+    print 'Enter carriage index: '
     carriage_index = gets.chomp.to_i
     carriage = @carriages[carriage_index - 1]
 
     if carriage.class == PassengerCarriage
       carriage.add_passenger_to_carriage
     elsif carriage.class == CargoCarriage
-      print "Enter taken volume: "
+      print 'Enter taken volume: '
       volume = gets.chomp.to_f
       carriage.load_carriage(volume) unless volume < 0
     end
@@ -380,7 +375,7 @@ class RailRoad
 
   def puts_free_space_in_carriage
     puts_list_of_carriages
-    print "Enter carriage index: "
+    print 'Enter carriage index: '
     carriage_index = gets.chomp.to_i
     carriage = @carriages[carriage_index - 1]
 
@@ -389,7 +384,7 @@ class RailRoad
 
   def puts_taken_space_in_carriage
     puts_list_of_carriages
-    print "Enter carriage index: "
+    print 'Enter carriage index: '
     carriage_index = gets.chomp.to_i
     carriage = @carriages[carriage_index - 1]
 
@@ -398,7 +393,7 @@ class RailRoad
 
   def trains_at_station_via_block
     puts_list_of_stations
-    print "Enter station index: "
+    print 'Enter station index: '
     station_index = gets.chomp.to_i
     station = @stations[station_index - 1] if station_index > 0
 
@@ -407,7 +402,7 @@ class RailRoad
 
   def carriages_at_train_via_block
     puts_list_of_trains
-    print "Enter train index: "
+    print 'Enter train index: '
     train_index = gets.chomp.to_i
     train = @trains[train_index - 1] if train_index > 0
 
