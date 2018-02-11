@@ -25,12 +25,8 @@ class Carriage
     space - free_space
   end
 
-  def load_carriage(volume = nil)
-    if volume
-      @free_space -= volume if free_space >= volume
-    else
-      @free_space -= 1 if free_space > 0
-    end
+  def load_carriage(volume)
+    @free_space -= volume if free_space >= volume
   end
 
   private
