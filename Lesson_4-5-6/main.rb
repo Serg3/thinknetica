@@ -103,9 +103,9 @@ rail_controller.trains[2].add_carriage(rail_controller.carriages[7])
 rail_controller.trains[2].add_carriage(rail_controller.carriages[8])
 rail_controller.trains[3].add_carriage(rail_controller.carriages[9])
 
-rail_controller.carriages[0].add_passenger_to_carriage
-2.times { rail_controller.carriages[2].add_passenger_to_carriage }
-3.times { rail_controller.carriages[3].add_passenger_to_carriage }
+rail_controller.carriages[0].load_carriage
+2.times { rail_controller.carriages[2].load_carriage }
+3.times { rail_controller.carriages[3].load_carriage }
 rail_controller.carriages[5].load_carriage(58.6)
 rail_controller.carriages[8].load_carriage(100)
 rail_controller.carriages[9].load_carriage(58.6)

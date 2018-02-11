@@ -5,8 +5,7 @@ class Carriage
   include Manufacturer
   include InstanceCounter
 
-  attr_accessor :free_space
-  attr_reader :number, :type, :space
+  attr_reader :number, :type, :space, :free_space
 
   def initialize(number, type, space)
     @number = number
@@ -26,7 +25,17 @@ class Carriage
     space - free_space
   end
 
+  def load_carriage(volume = nil)
+    if volume
+      @free_space -= volume if free_space >= volume
+    else
+      @free_space -= 1 if free_space > 0
+    end
+  end
+
   private
+
+  attr_writer :free_space
 
   def validation!
     raise ArgumentError.new('!!!Some argument is wrong!!!') unless valid?
