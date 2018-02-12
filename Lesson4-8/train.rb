@@ -7,7 +7,7 @@ class Train
 
   TRAIN_NUMBER_FORMAT = /^[\w&&[^_]]{3}-*{1}\w{2}$/
 
-  attr_reader :number, :type, :carriages, :speed, :route
+  attr_reader :number, :type, :speed, :route
 
   @@trains = {}
 

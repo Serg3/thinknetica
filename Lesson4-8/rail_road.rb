@@ -178,6 +178,14 @@ class RailRoad
     @carriages[carriage_index - 1] if carriage_index > 0
   end
 
+  def puts_carriage_format(train)
+    train.carriages do |carriage|
+      format_str = ""
+      format_str << "    #{carriage.class} №#{carriage.number}: "
+      p format_str << "free: #{carriage.free_space}, taken: #{carriage.taken_space}"
+    end
+  end
+
   # --- MAIN ACTIONS ---
 
   def create_station
@@ -219,17 +227,22 @@ class RailRoad
       p 'Types: 1 - passenger, 2 - cargo.'
       print 'Select train type: '
       train_type = gets.chomp.to_i
-      train_type = if train_type == 1
-        :passenger
-      elsif train_type == 2
-        :cargo
-      end
+      train_type =  if train_type == 1
+                      :passenger
+                    elsif train_type == 2
+                      :cargo
+                    end
       print 'Enter train number: '
       train_number = gets.chomp.strip
 
-      @trains << PassengerTrain.new(train_number, train_type) if train_type == :passenger
-      @trains << CargoTrain.new(train_number, train_type) if train_type == :cargo
-      raise ArgumentError, '!!!Type argument is wrong!!!' if train_type != :passenger && train_type != :cargo
+      @trains <<  if train_type == :passenger
+                    PassengerTrain.new(train_number, train_type)
+                  elsif train_type == :cargo
+                    CargoTrain.new(train_number, train_type)
+                  end
+      if train_type != :passenger && train_type != :cargo
+        raise ArgumentError, '!!!Type argument is wrong!!!'
+      end
       p "#{@trains.last.class} №#{@trains.last.number} created."
     rescue StandardError
       attempt += 1
@@ -245,17 +258,20 @@ class RailRoad
       print 'Select carriage type: '
       carriage_type = gets.chomp.to_i
       carriage_type = if carriage_type == 1
-        :passenger
-      elsif carriage_type == 2
-        :cargo
-      end
+                        :passenger
+                      elsif carriage_type == 2
+                        :cargo
+                      end
       print 'Enter carriage number: '
       carriage_number = gets.chomp.strip
       print 'Enter carriage space: '
       carriage_space = gets.chomp.to_f
 
-      @carriages << PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i) if carriage_type == :passenger
-      @carriages << CargoCarriage.new(carriage_number, carriage_type, carriage_space) if carriage_type == :cargo
+      @carriages << if carriage_type == :passenger
+                      PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i)
+                    elsif carriage_type == :cargo
+                      CargoCarriage.new(carriage_number, carriage_type, carriage_space)
+                    end
       p "#{@carriages.last.class} №#{@carriages.last.number} created."
     rescue StandardError
       attempt += 1
@@ -279,7 +295,6 @@ class RailRoad
 
   def remove_route_station
     route = choose_route
-
     p 'List of stations at route:'
     route.stations.map.with_index { |station, index| p "#{index + 1} - #{station.name}" }
     print 'Enter station index: '
@@ -303,7 +318,6 @@ class RailRoad
 
   def remove_train_carriage
     train = choose_train
-
     p 'List of carriages at train:'
     train.carriages.map.with_index { |carriage, index| p "#{index + 1} - #{carriage.number}" }
     print 'Enter carriage index: '
@@ -315,7 +329,9 @@ class RailRoad
 
   def puts_train_carriages
     train = choose_train
-    train.carriages.map.with_index { |carriage, index| p "#{index + 1} - №#{carriage.number}" } if train
+    train.carriages.map.with_index do |carriage, index|
+      p "#{index + 1} - №#{carriage.number}"
+    end if train
   end
 
   def move_train_forward
@@ -330,12 +346,16 @@ class RailRoad
 
   def route_stations
     route = choose_route
-    route.stations.map.with_index { |station, index| p "#{index + 1} - #{station.name}" } if route
+    route.stations.map.with_index do |station, index|
+      p "#{index + 1} - #{station.name}"
+    end if route
   end
 
   def station_trains
     station = choose_station
-    station.trains.map.with_index { |train, index| p "#{index + 1} - #{train.class} №#{train.number}" } if station
+    station.trains.map.with_index do |train, index|
+      p "#{index + 1} - #{train.class} №#{train.number}"
+    end if station
   end
 
   # MODULE 8 METHODS
@@ -368,7 +388,7 @@ class RailRoad
 
   def train_carriages_block
     train = choose_train
-    train.carriages { |carriage| p "#{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
+    puts_carriage_format(train)
   end
 
   def stations_trains_carriages
@@ -376,9 +396,7 @@ class RailRoad
       p "#{station.name} -----------------------"
       station.trains do |train|
         p "  #{train.class} №#{train.number} with #{train.carriages.size} carriages:"
-        train.carriages do |carriage|
-          p "    #{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}"
-        end
+        puts_carriage_format(train)
       end
     end
   end
