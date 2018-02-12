@@ -186,6 +186,30 @@ class RailRoad
     end
   end
 
+  def set_type(type)
+    if type == 1
+      :passenger
+    elsif type == 2
+      :cargo
+    end
+  end
+
+  def compare_train_type(number, type)
+    if type == :passenger
+      PassengerTrain.new(number, type)
+    elsif type == :cargo
+      CargoTrain.new(number, type)
+    end
+  end
+
+  def compare_carriage_type(number, type, space)
+    if type == :passenger
+      PassengerCarriage.new(number, type, space.to_i)
+    elsif type == :cargo
+      CargoCarriage.new(number, type, space.to_f)
+    end
+  end
+
   # --- MAIN ACTIONS ---
 
   def create_station
@@ -227,19 +251,11 @@ class RailRoad
       p 'Types: 1 - passenger, 2 - cargo.'
       print 'Select train type: '
       train_type = gets.chomp.to_i
-      train_type =  if train_type == 1
-                      :passenger
-                    elsif train_type == 2
-                      :cargo
-                    end
+      train_type = set_type(train_type)
       print 'Enter train number: '
       train_number = gets.chomp.strip
 
-      @trains <<  if train_type == :passenger
-                    PassengerTrain.new(train_number, train_type)
-                  elsif train_type == :cargo
-                    CargoTrain.new(train_number, train_type)
-                  end
+      @trains << compare_train_type(train_number, train_type)
       if train_type != :passenger && train_type != :cargo
         raise ArgumentError, '!!!Type argument is wrong!!!'
       end
@@ -257,21 +273,13 @@ class RailRoad
       p 'Types: 1 - passenger, 2 - cargo.'
       print 'Select carriage type: '
       carriage_type = gets.chomp.to_i
-      carriage_type = if carriage_type == 1
-                        :passenger
-                      elsif carriage_type == 2
-                        :cargo
-                      end
+      carriage_type = set_type(carriage_type)
       print 'Enter carriage number: '
       carriage_number = gets.chomp.strip
       print 'Enter carriage space: '
-      carriage_space = gets.chomp.to_f
+      carriage_space = gets.chomp
 
-      @carriages << if carriage_type == :passenger
-                      PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i)
-                    elsif carriage_type == :cargo
-                      CargoCarriage.new(carriage_number, carriage_type, carriage_space)
-                    end
+      @carriages << compare_carriage_type(carriage_number, carriage_type, carriage_space)
       p "#{@carriages.last.class} №#{@carriages.last.number} created."
     rescue StandardError
       attempt += 1
@@ -329,9 +337,11 @@ class RailRoad
 
   def puts_train_carriages
     train = choose_train
-    train.carriages.map.with_index do |carriage, index|
-      p "#{index + 1} - №#{carriage.number}"
-    end if train
+    if train
+      train.carriages.map.with_index do |carriage, index|
+        p "#{index + 1} - №#{carriage.number}"
+      end
+    end
   end
 
   def move_train_forward
@@ -346,16 +356,20 @@ class RailRoad
 
   def route_stations
     route = choose_route
-    route.stations.map.with_index do |station, index|
-      p "#{index + 1} - #{station.name}"
-    end if route
+    if route
+      route.stations.map.with_index do |station, index|
+        p "#{index + 1} - #{station.name}"
+      end
+    end
   end
 
   def station_trains
     station = choose_station
-    station.trains.map.with_index do |train, index|
-      p "#{index + 1} - #{train.class} №#{train.number}"
-    end if station
+    if station
+      station.trains.map.with_index do |train, index|
+        p "#{index + 1} - #{train.class} №#{train.number}"
+      end
+    end
   end
 
   # MODULE 8 METHODS
