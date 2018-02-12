@@ -10,118 +10,106 @@ class RailRoad
 
   # --- MENU ---
 
-  def menu
-    puts '------------------------------'
-    puts '1. Station actions.'
-    puts '2. Route actions.'
-    puts '3. Train actions.'
-    puts '4. Carriage actions.'
-    puts '5. MODULE 8 METHODS.'
-    puts 'Enter something else for exit.'
-    puts '------------------------------'
-    choise = make_choise
-
-    case choise
-    when 1
-      puts '1. Create station.'
-      puts '2. List of trains at station.'
-      puts '3. List of stations.'
-      puts '4. ALL stations from CLASS-METHOD.'
-      choise = make_choise
-
-      case choise
-      when 1 then create_station
-      when 2 then list_of_trains_at_station
-      when 3 then puts_list_of_stations
-      when 4 then Station.all.each { |station| puts station.name }
-      end
-
-      menu
-    when 2
-      puts '1. Create route.'
-      puts '2. Add station to route.'
-      puts '3. Remove station from route.'
-      puts '4. List of stations at route.'
-      puts '5. List of routes.'
-      choise = make_choise
-
-      case choise
-      when 1 then create_route
-      when 2 then add_station_to_route
-      when 3 then remove_station_from_route
-      when 4 then list_of_stations_at_route
-      when 5 then puts_list_of_routes
-      end
-
-      menu
-    when 3
-      puts '1. Create train.'
-      puts '2. Set route to train.'
-      puts '3. Move train forward.'
-      puts '4. Move train backward.'
-      puts '5. List of carriages at train.'
-      puts '6. List of trains.'
-      choise = make_choise
-
-      case choise
-      when 1 then create_train
-      when 2 then set_route_to_train
-      when 3 then move_train_forward
-      when 4 then move_train_backward
-      when 5 then puts_list_of_carriages_at_train
-      when 6 then puts_list_of_trains
-      end
-
-      menu
-    when 4
-      puts '1. Create carriage.'
-      puts '2. Add carriage to train.'
-      puts '3. Remove carriage from train.'
-      puts '4. List of carriages.'
-      choise = make_choise
-
-      case choise
-      when 1 then create_carriage
-      when 2 then add_carriage_to_train
-      when 3 then remove_carriage_from_train
-      when 4 then puts_list_of_carriages
-      end
-
-      menu
-    when 5
-      puts '1. Take space in carriage.'
-      puts '2. Free space in carriage.'
-      puts '3. Taken space in carriage.'
-      puts '4. Trains at station via block.'
-      puts '5. Carriages at train via block.'
-      puts '6. ALL stations with trains and their carriages.'
-
-      choise = make_choise
-
-      case choise
-      when 1 then take_space_in_carriage
-      when 2 then puts_free_space_in_carriage
-      when 3 then puts_taken_space_in_carriage
-      when 4 then trains_at_station_via_block
-      when 5 then carriages_at_train_via_block
-      when 6 then all_stations_with_trains_carriages
-      end
-
-      menu
-    else
-      puts 'Good bye!'
-    end
+  def main_menu
+    p '------------------------------'
+    p '1. Station actions.'
+    p '2. Route actions.'
+    p '3. Train actions.'
+    p '4. Carriage actions.'
+    p '5. MODULE 8 METHODS.'
+    p 'Enter something else for exit.'
+    p '------------------------------'
+    make_choise
   end
 
-  def all_stations_with_trains_carriages
-    @stations.each do |station|
-      p "#{station.name} -----------------------"
+  def station_submenu
+    p '1. Create station.'
+    p '2. List of trains at station.'
+    p '3. List of stations.'
+    p '4. ALL stations from CLASS-METHOD.'
+    case make_choise
+    when 1 then create_station
+    when 2 then station_trains
+    when 3 then puts_stations
+    when 4 then Station.all.each { |station| puts station.name }
+    end
+    menu
+  end
 
-      station.list_of_trains_with_block do |train|
-        p "  #{train.class} №#{train.number} with #{train.carriages.size} carriages:"
+  def route_submenu
+    p '1. Create route.'
+    p '2. Add station to route.'
+    p '3. Remove station from route.'
+    p '4. List of stations at route.'
+    p '5. List of routes.'
+    case make_choise
+    when 1 then create_route
+    when 2 then add_route_station
+    when 3 then remove_route_station
+    when 4 then route_stations
+    when 5 then puts_routes
+    end
+    menu
+  end
 
-        train.list_of_carriages_with_block { |carriage| p "    #{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
-      end
+  def train_submenu
+    p '1. Create train.'
+    p '2. Set route to train.'
+    p '3. Move train forward.'
+    p '4. Move train backward.'
+    p '5. List of carriages at train.'
+    p '6. List of trains.'
+    case make_choise
+    when 1 then create_train
+    when 2 then set_route_to_train
+    when 3 then move_train_forward
+    when 4 then move_train_backward
+    when 5 then puts_train_carriages
+    when 6 then puts_trains
+    end
+    menu
+  end
+
+  def carriage_submenu
+    p '1. Create carriage.'
+    p '2. Add carriage to train.'
+    p '3. Remove carriage from train.'
+    p '4. List of carriages.'
+    case make_choise
+    when 1 then create_carriage
+    when 2 then add_train_carriage
+    when 3 then remove_train_carriage
+    when 4 then puts_carriages
+    end
+    menu
+  end
+
+  def module_8_submenu
+    p '1. Take space in carriage.'
+    p '2. Free space in carriage.'
+    p '3. Taken space in carriage.'
+    p '4. Trains at station via block.'
+    p '5. Carriages at train via block.'
+    p '6. ALL stations with trains and their carriages.'
+    case make_choise
+    when 1 then take_carriage_space
+    when 2 then free_carriage_space
+    when 3 then taken_carriage_space
+    when 4 then station_trains_block
+    when 5 then train_carriages_block
+    when 6 then stations_trains_carriages
+    end
+    menu
+  end
+
+  def menu
+    case main_menu
+    when 1 then station_submenu
+    when 2 then route_submenu
+    when 3 then train_submenu
+    when 4 then carriage_submenu
+    when 5 then module_8_submenu
+    else p 'Good bye!'
     end
   end
 
@@ -134,24 +122,60 @@ class RailRoad
     gets.chomp.to_i
   end
 
-  def puts_list_of_stations
-    puts 'List of stations:'
-    @stations.map.with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+  def puts_stations
+    p 'List of stations:'
+    @stations.map.with_index do |station, index|
+      p "#{index + 1} - #{station.name}"
+    end
   end
 
-  def puts_list_of_routes
-    puts 'List of routes:'
-    @routes.map.with_index { |route, index| puts "#{index + 1} - #{route.name}" }
+  def puts_routes
+    p 'List of routes:'
+    @routes.map.with_index do |route, index|
+      p "#{index + 1} - #{route.name}"
+    end
   end
 
-  def puts_list_of_trains
-    puts 'List of trains:'
-    @trains.map.with_index { |train, index| puts "#{index + 1} - #{train.class} №#{train.number}" }
+  def puts_trains
+    p 'List of trains:'
+    @trains.map.with_index do |train, index|
+      p "#{index + 1} - #{train.class} №#{train.number}"
+    end
   end
 
-  def puts_list_of_carriages
-    puts 'List of carriages:'
-    @carriages.map.with_index { |carriage, index| puts "#{index + 1} - #{carriage.class} №#{carriage.number}" }
+  def puts_carriages
+    p 'List of carriages:'
+    @carriages.map.with_index do |carriage, index|
+      p "#{index + 1} - #{carriage.class} №#{carriage.number}"
+    end
+  end
+
+  def choose_route
+    puts_routes
+    print 'Enter route index: '
+    route_index = gets.chomp.to_i
+    @routes[route_index - 1] if route_index > 0
+  end
+
+  def choose_station
+    puts_stations
+    print 'Enter station index: '
+    station_index = gets.chomp.to_i
+    @stations[station_index - 1] if station_index > 0
+  end
+
+  def choose_train
+    puts_trains
+    print 'Enter train index: '
+    train_index = gets.chomp.to_i
+    @trains[train_index - 1] if train_index > 0
+  end
+
+  def choose_carriage
+    puts_carriages
+    print 'Enter carriage index: '
+    carriage_index = gets.chomp.to_i
+    @carriages[carriage_index - 1] if carriage_index > 0
   end
 
   # --- MAIN ACTIONS ---
@@ -160,13 +184,11 @@ class RailRoad
     attempt = 0
     begin
       print 'Enter station name: '
-      station_name = gets.chomp.strip
-
-      @stations << Station.new(station_name)
-      puts "Station '#{@stations.last.name}' created."
+      @stations << Station.new(gets.chomp.strip)
+      p "Station '#{@stations.last.name}' created."
     rescue StandardError
       attempt += 1
-      puts 'You must enter some name!'
+      p 'You must enter some name!'
       retry if attempt < 3
     end
   end
@@ -174,7 +196,7 @@ class RailRoad
   def create_route
     attempt = 0
     begin
-      puts_list_of_stations
+      puts_stations
       print 'Enter number of starting station: '
       starting_station_index = gets.chomp.to_i
       starting_station = @stations[starting_station_index - 1] if starting_station_index > 0
@@ -183,10 +205,10 @@ class RailRoad
       last_station = @stations[last_station_index - 1] if last_station_index > 0
 
       @routes << Route.new(starting_station, last_station)
-      puts "Route '#{@routes.last.name}' created."
+      p "Route '#{@routes.last.name}' created."
     rescue StandardError
       attempt += 1
-      puts 'You must to choose stations from list!'
+      p 'You must to choose stations from list!'
       retry if attempt < 3
     end
   end
@@ -194,19 +216,24 @@ class RailRoad
   def create_train
     attempt = 0
     begin
-      puts 'Types: 1 - passenger, 2 - cargo.'
+      p 'Types: 1 - passenger, 2 - cargo.'
       print 'Select train type: '
       train_type = gets.chomp.to_i
+      train_type = if train_type == 1
+        :passenger
+      elsif train_type == 2
+        :cargo
+      end
       print 'Enter train number: '
       train_number = gets.chomp.strip
 
-      @trains << PassengerTrain.new(train_number, train_type) if train_type == 1
-      @trains << CargoTrain.new(train_number, train_type) if train_type == 2
-      raise ArgumentError, '!!!Type argument is wrong!!!' if train_type != 1 && train_type != 2
-      puts "#{@trains.last.class} №#{@trains.last.number} created."
+      @trains << PassengerTrain.new(train_number, train_type) if train_type == :passenger
+      @trains << CargoTrain.new(train_number, train_type) if train_type == :cargo
+      raise ArgumentError, '!!!Type argument is wrong!!!' if train_type != :passenger && train_type != :cargo
+      p "#{@trains.last.class} №#{@trains.last.number} created."
     rescue StandardError
       attempt += 1
-      puts 'You must enter right arguments!'
+      p 'You must enter right arguments!'
       retry if attempt < 3
     end
   end
@@ -214,158 +241,109 @@ class RailRoad
   def create_carriage
     attempt = 0
     begin
-      puts 'Types: 1 - passenger, 2 - cargo.'
+      p 'Types: 1 - passenger, 2 - cargo.'
       print 'Select carriage type: '
       carriage_type = gets.chomp.to_i
+      carriage_type = if carriage_type == 1
+        :passenger
+      elsif carriage_type == 2
+        :cargo
+      end
       print 'Enter carriage number: '
       carriage_number = gets.chomp.strip
       print 'Enter carriage space: '
-      carriage_space = gets.chomp
+      carriage_space = gets.chomp.to_f
 
-      @carriages << PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i) if carriage_type == 1
-      @carriages << CargoCarriage.new(carriage_number, carriage_type, carriage_space.to_f) if carriage_type == 2
-      puts "#{@carriages.last.class} №#{@carriages.last.number} created."
+      @carriages << PassengerCarriage.new(carriage_number, carriage_type, carriage_space.to_i) if carriage_type == :passenger
+      @carriages << CargoCarriage.new(carriage_number, carriage_type, carriage_space) if carriage_type == :cargo
+      p "#{@carriages.last.class} №#{@carriages.last.number} created."
     rescue StandardError
       attempt += 1
-      puts 'You must enter right arguments!'
+      p 'You must enter right arguments!'
       retry if attempt < 3
     end
   end
 
-  def add_station_to_route
+  def add_route_station
     attempt = 0
     begin
-      puts_list_of_routes
-      print 'Enter route index: '
-      change_route_index = gets.chomp.to_i
-      change_route = @routes[change_route_index - 1] if change_route_index > 0
-
-      puts_list_of_stations
-      print 'Enter station index: '
-      add_station_index = gets.chomp.to_i
-      add_station = @stations[add_station_index - 1] if add_station_index > 0
-
-      change_route.add_station(add_station) if add_station && change_route && change_route.clone.add_station(add_station)
+      route = choose_route
+      station = choose_station
+      route.add_station(station) if route.clone.add_station(station)
     rescue StandardError
       attempt += 1
-      puts 'You must to choose station from list!'
+      p 'You must to choose station from list!'
       retry if attempt < 3
     end
   end
 
-  def remove_station_from_route
-    puts_list_of_routes
-    print 'Enter route index: '
-    change_route_index = gets.chomp.to_i
-    change_route = @routes[change_route_index - 1]
+  def remove_route_station
+    route = choose_route
 
-    puts 'List of stations at route:'
-    change_route.list_of_stations.map.with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    p 'List of stations at route:'
+    route.stations.map.with_index { |station, index| p "#{index + 1} - #{station.name}" }
     print 'Enter station index: '
-    remove_station_index = gets.chomp.to_i
-    remove_station = change_route.list_of_stations[remove_station_index - 1]
+    station_index = gets.chomp.to_i
+    station = route.stations[station_index - 1] if station_index > 0
 
-    change_route.remove_station(remove_station) unless remove_station.nil? && change_route.nil?
+    route.remove_station(station) if station && route
   end
 
   def set_route_to_train
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    puts_list_of_routes
-    print 'Enter route index: '
-    set_route_index = gets.chomp.to_i
-    set_route = @routes[set_route_index - 1]
-
-    change_train.route = set_route unless change_train.nil? && set_route.nil?
+    train = choose_train
+    route = choose_route
+    train.route = route if train && route
   end
 
-  def add_carriage_to_train
-    puts_list_of_carriages
+  def add_train_carriage
+    carriage = choose_carriage
+    train = choose_train
+    train.add_carriage(carriage) if train && carriage
+  end
+
+  def remove_train_carriage
+    train = choose_train
+
+    p 'List of carriages at train:'
+    train.carriages.map.with_index { |carriage, index| p "#{index + 1} - #{carriage.number}" }
     print 'Enter carriage index: '
-    add_carriage_index = gets.chomp.to_i
-    add_carriage = @carriages[add_carriage_index - 1]
+    carriage_index = gets.chomp.to_i
+    carriage = train.carriages[carriage_index - 1] if carriage_index > 0
 
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    change_train.add_carriage(add_carriage) unless change_train.nil? || add_carriage.nil?
+    train.remove_carriage(carriage) if train && carriage
   end
 
-  def remove_carriage_from_train
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    puts 'List of carriages at train:'
-    change_train.carriages.map.with_index { |carriage, index| puts "#{index + 1} - #{carriage.number}" }
-    print 'Enter carriage index: '
-    remove_carriage_index = gets.chomp.to_i
-    remove_carriage = change_train.carriages[remove_carriage_index - 1]
-
-    change_train.remove_carriage(remove_carriage) unless change_train.nil? || remove_carriage.nil?
-  end
-
-  def puts_list_of_carriages_at_train
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    change_train.carriages.map.with_index { |carriage, index| puts "#{index + 1} - №#{carriage.number}" } unless change_train.nil?
+  def puts_train_carriages
+    train = choose_train
+    train.carriages.map.with_index { |carriage, index| p "#{index + 1} - №#{carriage.number}" } if train
   end
 
   def move_train_forward
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    change_train.move_forward unless change_train.nil?
+    train = choose_train
+    train.move_forward if train
   end
 
   def move_train_backward
-    puts_list_of_trains
-    print 'Enter train index: '
-    change_train_index = gets.chomp.to_i
-    change_train = @trains[change_train_index - 1]
-
-    change_train.move_backward unless change_train.nil?
+    train = choose_train
+    train.move_backward if train
   end
 
-  def list_of_stations_at_route
-    puts_list_of_routes
-    print 'Enter route index: '
-    change_route_index = gets.chomp.to_i
-    change_route = @routes[change_route_index - 1]
-
-    change_route.list_of_stations.map.with_index { |station, index| puts "#{index + 1} - #{station.name}" } unless change_route.nil?
+  def route_stations
+    route = choose_route
+    route.stations.map.with_index { |station, index| p "#{index + 1} - #{station.name}" } if route
   end
 
-  def list_of_trains_at_station
-    puts_list_of_stations
-    print 'Enter station index: '
-    station_index = gets.chomp.to_i
-    station = @stations[station_index - 1]
-
-    station.list_of_trains.map.with_index { |train, index| puts "#{index + 1} - #{train.class} №#{train.number}" } unless station.nil?
+  def station_trains
+    station = choose_station
+    station.trains.map.with_index { |train, index| p "#{index + 1} - #{train.class} №#{train.number}" } if station
   end
 
   # MODULE 8 METHODS
 
-  def take_space_in_carriage
-    puts_list_of_carriages
-    print 'Enter carriage index: '
-    carriage_index = gets.chomp.to_i
-    carriage = @carriages[carriage_index - 1]
-
+  def take_carriage_space
+    carriage = choose_carriage
     if carriage.class == PassengerCarriage
-      carriage.add_passenger_to_carriage
+      carriage.load_carriage
     elsif carriage.class == CargoCarriage
       print 'Enter taken volume: '
       volume = gets.chomp.to_f
@@ -373,39 +351,35 @@ class RailRoad
     end
   end
 
-  def puts_free_space_in_carriage
-    puts_list_of_carriages
-    print 'Enter carriage index: '
-    carriage_index = gets.chomp.to_i
-    carriage = @carriages[carriage_index - 1]
-
+  def free_carriage_space
+    carriage = choose_carriage
     p "Free space: #{carriage.free_space}"
   end
 
-  def puts_taken_space_in_carriage
-    puts_list_of_carriages
-    print 'Enter carriage index: '
-    carriage_index = gets.chomp.to_i
-    carriage = @carriages[carriage_index - 1]
-
+  def taken_carriage_space
+    carriage = choose_carriage
     p "Taken space: #{carriage.taken_space}"
   end
 
-  def trains_at_station_via_block
-    puts_list_of_stations
-    print 'Enter station index: '
-    station_index = gets.chomp.to_i
-    station = @stations[station_index - 1] if station_index > 0
-
-    station.list_of_trains_with_block { |train| p "#{train.class} №#{train.number}" }
+  def station_trains_block
+    station = choose_station
+    station.trains { |train| p "#{train.class} №#{train.number}" }
   end
 
-  def carriages_at_train_via_block
-    puts_list_of_trains
-    print 'Enter train index: '
-    train_index = gets.chomp.to_i
-    train = @trains[train_index - 1] if train_index > 0
+  def train_carriages_block
+    train = choose_train
+    train.carriages { |carriage| p "#{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
+  end
 
-    train.list_of_carriages_with_block { |carriage| p "#{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}" }
+  def stations_trains_carriages
+    @stations.each do |station|
+      p "#{station.name} -----------------------"
+      station.trains do |train|
+        p "  #{train.class} №#{train.number} with #{train.carriages.size} carriages:"
+        train.carriages do |carriage|
+          p "    #{carriage.class} №#{carriage.number}: free: #{carriage.free_space}, taken: #{carriage.taken_space}"
+        end
+      end
+    end
   end
 end

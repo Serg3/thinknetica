@@ -42,32 +42,32 @@ class Train
   end
 
   def add_carriage(carriage)
-    @carriages << carriage if @speed == 0 && right_type?(carriage)
+    @carriages << carriage if @speed.zero? && right_type?(carriage)
   end
 
   def remove_carriage(carriage)
-    @carriages.delete(carriage) if !@carriages.empty? && (@speed == 0)
+    @carriages.delete(carriage) if @carriages.any? && @speed.zero?
   end
 
   def route=(route)
     @route = route
-    @station = @route.list_of_stations.first
+    @station = @route.stations.first
     @station.arrival(self)
   end
 
   def move_forward
-    forward_station_index = current_station_index + 1
-    move_train(forward_station_index) if forward_station_index < @route.list_of_stations.size
+    next_station_index = current_station_index + 1
+    move_train(next_station_index) if next_station_index < @route.stations.size
   end
 
   def move_backward
-    backward_station_index = current_station_index - 1
-    move_train(backward_station_index) if backward_station_index > -1
+    next_station_index = current_station_index - 1
+    move_train(next_station_index) if next_station_index > -1
   end
 
   def backward_station
-    backward_station_index = current_station_index - 1
-    @route.list_of_stations[backward_station_index] if backward_station_index > -1
+    next_station_index = current_station_index - 1
+    @route.stations[next_station_index] if next_station_index > -1
   end
 
   def current_station
@@ -75,30 +75,32 @@ class Train
   end
 
   def forward_station
-    forward_station_index = current_station_index + 1
-    @route.list_of_stations[forward_station_index] if forward_station_index < @route.list_of_stations.size
+    next_station_index = current_station_index + 1
+    @route.stations[next_station_index] if next_station_index < @route.stations.size
   end
 
   def valid?
-    number =~ TRAIN_NUMBER_FORMAT && (type == 1 || type == 2)
+    number =~ TRAIN_NUMBER_FORMAT && (type == :passenger || type == :cargo)
   end
 
-  def list_of_carriages_with_block
-    carriages.each { |carriage| yield(carriage) }
+  def carriages
+    if block_given?
+      carriages.each { |carriage| yield(carriage) }
+    else
+      @carriages
+    end
   end
-
-  # эти методы не являются интерфейсом класса, так как не являются действиями для объектов, их используют их используют только инстансные методы класса
 
   private
 
   def move_train(station_index)
     @station.departure(self)
-    @station = @route.list_of_stations[station_index]
+    @station = @route.stations[station_index]
     @station.arrival(self)
   end
 
   def current_station_index
-    @route.list_of_stations.index(@station)
+    @route.stations.index(@station)
   end
 
   def validation!

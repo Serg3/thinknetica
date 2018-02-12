@@ -17,12 +17,12 @@ class Carriage
   end
 
   def valid?
-    return false if number.nil? || number.length.zero? || (type != 1 && type != 2)
+    return false if number.nil? || number.length.zero? || (type != :passenger && type != :cargo)
     true
   end
 
   def taken_space
-    space - free_space
+    (space - free_space).round(2)
   end
 
   def load_carriage(volume)

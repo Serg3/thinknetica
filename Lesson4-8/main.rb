@@ -71,26 +71,26 @@ rail_controller = RailRoad.new
 
 3.times { |x| rail_controller.stations << Station.new("Station_#{x}") }
 
-rail_controller.trains << PassengerTrain.new('555-55', 1)
-rail_controller.trains << PassengerTrain.new('55555', 1)
-rail_controller.trains << CargoTrain.new('333-33', 2)
-rail_controller.trains << CargoTrain.new('33333', 2)
+rail_controller.trains << PassengerTrain.new("555-55", :passenger)
+rail_controller.trains << PassengerTrain.new("55555", :passenger)
+rail_controller.trains << CargoTrain.new("333-33", :cargo)
+rail_controller.trains << CargoTrain.new("33333", :cargo)
 
 rail_controller.stations[0].arrival(rail_controller.trains[0])
 rail_controller.stations[0].arrival(rail_controller.trains[2])
 rail_controller.stations[1].arrival(rail_controller.trains[1])
 rail_controller.stations[2].arrival(rail_controller.trains[3])
 
-rail_controller.carriages << PassengerCarriage.new('132', 1, 67)
-rail_controller.carriages << PassengerCarriage.new('134', 1, 65)
-rail_controller.carriages << PassengerCarriage.new('987', 1, 65)
-rail_controller.carriages << PassengerCarriage.new('456', 1, 67)
-rail_controller.carriages << PassengerCarriage.new('742', 1, 67)
-rail_controller.carriages << CargoCarriage.new('57', 2, 158.6)
-rail_controller.carriages << CargoCarriage.new('29', 2, 158.6)
-rail_controller.carriages << CargoCarriage.new('41', 2, 126.4)
-rail_controller.carriages << CargoCarriage.new('83', 2, 126.4)
-rail_controller.carriages << CargoCarriage.new('68', 2, 158.6)
+rail_controller.carriages << PassengerCarriage.new("132", :passenger, 67)
+rail_controller.carriages << PassengerCarriage.new("134", :passenger, 65)
+rail_controller.carriages << PassengerCarriage.new("987", :passenger, 65)
+rail_controller.carriages << PassengerCarriage.new("456", :passenger, 67)
+rail_controller.carriages << PassengerCarriage.new("742", :passenger, 67)
+rail_controller.carriages << CargoCarriage.new("57", :cargo, 158.6)
+rail_controller.carriages << CargoCarriage.new("29", :cargo, 158.6)
+rail_controller.carriages << CargoCarriage.new("41", :cargo, 126.4)
+rail_controller.carriages << CargoCarriage.new("83", :cargo, 126.4)
+rail_controller.carriages << CargoCarriage.new("68", :cargo, 158.6)
 
 rail_controller.trains[0].add_carriage(rail_controller.carriages[0])
 rail_controller.trains[0].add_carriage(rail_controller.carriages[1])
@@ -111,6 +111,6 @@ rail_controller.carriages[8].load_carriage(100)
 rail_controller.carriages[9].load_carriage(58.6)
 rail_controller.carriages[9].load_carriage(50)
 
-rail_controller.all_stations_with_trains_carriages
+#rail_controller.stations_trains_carriages
 
 rail_controller.menu

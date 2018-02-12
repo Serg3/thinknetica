@@ -2,7 +2,7 @@ class Station
   include InstanceCounter
 
   attr_accessor :name
-  attr_reader :list_of_trains
+  attr_reader :trains
 
   @@stations = []
 
@@ -13,21 +13,21 @@ class Station
   def initialize(name)
     @name = name
     validation!
-    @list_of_trains = []
+    @trains = []
     @@stations << self
     register_instance
   end
 
   def arrival(train)
-    @list_of_trains << train
+    @trains << train
   end
 
   def departure(train)
-    @list_of_trains.delete(train)
+    @trains.delete(train)
   end
 
   def list_of_trains_by_type(type = nil)
-    @list_of_trains.select { |train| train.type == type } unless type.nil?
+    @trains.select { |train| train.type == type } if type
   end
 
   def valid?
@@ -35,8 +35,12 @@ class Station
     true
   end
 
-  def list_of_trains_with_block
-    list_of_trains.each { |train| yield(train) }
+  def trains
+    if block_given?
+      trains.each { |train| yield(train) }
+    else
+      @trains
+    end
   end
 
   private
