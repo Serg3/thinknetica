@@ -1,9 +1,11 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'accessor'
 
 class Carriage
   include Manufacturer
   include InstanceCounter
+  include Accessor
 
   attr_reader :number, :type, :space, :free_space
 

@@ -1,5 +1,8 @@
+require_relative 'accessor'
+
 class Route
   include InstanceCounter
+  include Accessor
 
   attr_reader :stations, :name
 

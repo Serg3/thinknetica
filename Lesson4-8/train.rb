@@ -1,9 +1,11 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'accessor'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  include Accessor
 
   TRAIN_NUMBER_FORMAT = /^[\w&&[^_]]{3}-*{1}\w{2}$/
 

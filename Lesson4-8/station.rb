@@ -1,5 +1,8 @@
+require_relative 'accessor'
+
 class Station
   include InstanceCounter
+  include Accessor
 
   attr_accessor :name
 

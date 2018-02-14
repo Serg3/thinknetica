@@ -1,5 +1,6 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'accessor'
 require_relative 'rail_road'
 require_relative 'station'
 require_relative 'route'
@@ -69,48 +70,57 @@ require_relative 'cargo_carriage'
 
 rail_controller = RailRoad.new
 
-3.times { |x| rail_controller.stations << Station.new("Station_#{x}") }
-
-rail_controller.trains << PassengerTrain.new("555-55", :passenger)
-rail_controller.trains << PassengerTrain.new("55555", :passenger)
-rail_controller.trains << CargoTrain.new("333-33", :cargo)
-rail_controller.trains << CargoTrain.new("33333", :cargo)
-
-rail_controller.stations[0].arrival(rail_controller.trains[0])
-rail_controller.stations[0].arrival(rail_controller.trains[2])
-rail_controller.stations[1].arrival(rail_controller.trains[1])
-rail_controller.stations[2].arrival(rail_controller.trains[3])
-
-rail_controller.carriages << PassengerCarriage.new("132", :passenger, 67)
-rail_controller.carriages << PassengerCarriage.new("134", :passenger, 65)
-rail_controller.carriages << PassengerCarriage.new("987", :passenger, 65)
-rail_controller.carriages << PassengerCarriage.new("456", :passenger, 67)
-rail_controller.carriages << PassengerCarriage.new("742", :passenger, 67)
-rail_controller.carriages << CargoCarriage.new("57", :cargo, 158.6)
-rail_controller.carriages << CargoCarriage.new("29", :cargo, 158.6)
-rail_controller.carriages << CargoCarriage.new("41", :cargo, 126.4)
-rail_controller.carriages << CargoCarriage.new("83", :cargo, 126.4)
-rail_controller.carriages << CargoCarriage.new("68", :cargo, 158.6)
-
-rail_controller.trains[0].add_carriage(rail_controller.carriages[0])
-rail_controller.trains[0].add_carriage(rail_controller.carriages[1])
-rail_controller.trains[1].add_carriage(rail_controller.carriages[2])
-rail_controller.trains[1].add_carriage(rail_controller.carriages[3])
-rail_controller.trains[1].add_carriage(rail_controller.carriages[4])
-rail_controller.trains[2].add_carriage(rail_controller.carriages[5])
-rail_controller.trains[2].add_carriage(rail_controller.carriages[6])
-rail_controller.trains[2].add_carriage(rail_controller.carriages[7])
-rail_controller.trains[2].add_carriage(rail_controller.carriages[8])
-rail_controller.trains[3].add_carriage(rail_controller.carriages[9])
-
-rail_controller.carriages[0].load_carriage
-2.times { rail_controller.carriages[2].load_carriage }
-3.times { rail_controller.carriages[3].load_carriage }
-rail_controller.carriages[5].load_carriage(58.6)
-rail_controller.carriages[8].load_carriage(100)
-rail_controller.carriages[9].load_carriage(58.6)
-rail_controller.carriages[9].load_carriage(50)
+# 3.times { |x| rail_controller.stations << Station.new("Station_#{x}") }
+#
+# rail_controller.trains << PassengerTrain.new("555-55", :passenger)
+# rail_controller.trains << PassengerTrain.new("55555", :passenger)
+# rail_controller.trains << CargoTrain.new("333-33", :cargo)
+# rail_controller.trains << CargoTrain.new("33333", :cargo)
+#
+# rail_controller.stations[0].arrival(rail_controller.trains[0])
+# rail_controller.stations[0].arrival(rail_controller.trains[2])
+# rail_controller.stations[1].arrival(rail_controller.trains[1])
+# rail_controller.stations[2].arrival(rail_controller.trains[3])
+#
+# rail_controller.carriages << PassengerCarriage.new("132", :passenger, 67)
+# rail_controller.carriages << PassengerCarriage.new("134", :passenger, 65)
+# rail_controller.carriages << PassengerCarriage.new("987", :passenger, 65)
+# rail_controller.carriages << PassengerCarriage.new("456", :passenger, 67)
+# rail_controller.carriages << PassengerCarriage.new("742", :passenger, 67)
+# rail_controller.carriages << CargoCarriage.new("57", :cargo, 158.6)
+# rail_controller.carriages << CargoCarriage.new("29", :cargo, 158.6)
+# rail_controller.carriages << CargoCarriage.new("41", :cargo, 126.4)
+# rail_controller.carriages << CargoCarriage.new("83", :cargo, 126.4)
+# rail_controller.carriages << CargoCarriage.new("68", :cargo, 158.6)
+#
+# rail_controller.trains[0].add_carriage(rail_controller.carriages[0])
+# rail_controller.trains[0].add_carriage(rail_controller.carriages[1])
+# rail_controller.trains[1].add_carriage(rail_controller.carriages[2])
+# rail_controller.trains[1].add_carriage(rail_controller.carriages[3])
+# rail_controller.trains[1].add_carriage(rail_controller.carriages[4])
+# rail_controller.trains[2].add_carriage(rail_controller.carriages[5])
+# rail_controller.trains[2].add_carriage(rail_controller.carriages[6])
+# rail_controller.trains[2].add_carriage(rail_controller.carriages[7])
+# rail_controller.trains[2].add_carriage(rail_controller.carriages[8])
+# rail_controller.trains[3].add_carriage(rail_controller.carriages[9])
+#
+# rail_controller.carriages[0].load_carriage
+# 2.times { rail_controller.carriages[2].load_carriage }
+# 3.times { rail_controller.carriages[3].load_carriage }
+# rail_controller.carriages[5].load_carriage(58.6)
+# rail_controller.carriages[8].load_carriage(100)
+# rail_controller.carriages[9].load_carriage(58.6)
+# rail_controller.carriages[9].load_carriage(50)
 
 #rail_controller.stations_trains_carriages
+
+Train.attr_accessor_with_history("new_var")
+train = PassengerTrain.new("555-55", :passenger)
+p "History: #{train.new_var_history}"
+p "Value: #{train.new_var}"
+train.new_var = "new var value"
+p "History: #{train.new_var_history}"
+train.new_var = "new var value 2"
+p "History: #{train.new_var_history}"
 
 rail_controller.menu
