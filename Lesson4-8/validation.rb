@@ -19,26 +19,32 @@ module Validation
         valid_method = "validate_#{validation[:type]}".to_sym
         var = instance_variable_get("@#{validation[:name]}")
         arg = validation[:arg]
-        send(valid_method, var, arg)
-        true
+        arg ? send(valid_method, var, arg) : send(valid_method, var)
+        #true
       end
+    end
 
-      def valid?
-        validate!
-      end
+    def valid?
+      validate!
+    end
 
-      private
+    private
 
-      def validate_presence(var)
-        raise ArgumentError 'Parameter does not have characters!' if var.nil? || var.empty?
-      end
+    def validate_presence(var)
+      raise ArgumentError 'Parameter does not have characters!' if var.nil? || var.empty?
+    end
 
-      def validate_format(var, format)
-        raise ArgumentError 'Incorrect format of parameter!' unless var =~ format
-      end
+    def validate_format(var, format)
+      raise ArgumentError 'Incorrect format of parameter!' unless var =~ format
+    end
 
-      def validate_type(var, type)
+    def validate_type(var, type)
+      if type.class == Class
         raise ArgumentError 'Incorrect type of parameter!' unless var.is_a? type
+      elsif type.class == Symbol
+        raise ArgumentError 'Incorrect type of parameter!' unless var == type
+      else
+        raise ArgumentError 'Wrong type!!!'
       end
     end
   end

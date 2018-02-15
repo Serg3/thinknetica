@@ -11,19 +11,16 @@ class Carriage
 
   attr_reader :number, :type, :space, :free_space
 
+  validate :number, :presence
+
   def initialize(number, type, space)
     @number = number
     @type = type
     @space = space
     @free_space = space
-    # validation!
+    validate!
     register_instance
   end
-
-  # def valid?
-  #   return false if number.nil? || number.length.zero? || (type != :passenger && type != :cargo)
-  #   true
-  # end
 
   def taken_space
     (space - free_space).round(2)
@@ -36,8 +33,4 @@ class Carriage
   private
 
   attr_writer :free_space
-
-  # def validation!
-  #   raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
-  # end
 end

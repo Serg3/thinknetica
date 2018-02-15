@@ -21,7 +21,7 @@ module Accessor
 
     def strong_attr_acessor(name, type)
       var_name = "@#{name}".to_sym
-      define_method(name.to_s.to_sym) { instance_variable_get(var_name) }
+      define_method(name.to_sym) { instance_variable_get(var_name) }
 
       define_method("#{name}=".to_sym) do |value|
         raise ArgumentError, 'Wrong type of instance variable!' unless value.is_a? type

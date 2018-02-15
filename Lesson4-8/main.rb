@@ -139,14 +139,69 @@ Train.strong_attr_acessor("strong_var", PassengerCarriage)
 begin
   train.strong_var = PassengerCarriage.new("654-g", :passenger, 68)
   p "Strong_var: '#{train.strong_var.number}' of '#{train.strong_var.type}' type."
+rescue => message
+  p message
+end
+
+begin
   train.strong_var = CargoCarriage.new("546956", :cargo, 175.6)
   p "Strong_var: '#{train.strong_var.number}' of '#{train.strong_var.type}' type."
 rescue => message
-  p "#{message} CargoCarriage.new('546956', :cargo, 175.6)"
+  p message
 end
 
-p "----------"
+p "---------- VALIDATIONS ----------"
 
-station = Station.new("station_1")
+begin
+  station_1 = Station.new("station_1")
+  p "Validate for #{station_1} successful."
+  station_1 = Station.new(:station_1)
+rescue => message
+    p message
+end
+
+p "---"
+
+begin
+  route = Route.new(Station.new("station_2"), Station.new("station_3"))
+  p "Validate for #{route} successful."
+  route = Route.new("station_2", Station.new("station_3"))
+rescue => message
+    p message
+end
+
+p "---"
+
+begin
+  train = CargoTrain.new("55555-hgf55", :cargo)
+  p "Validate for #{train} successful."
+  #train = CargoTrain.new("", :cargo)
+  #train = CargoTrain.new("", :passenger)
+rescue => message
+    p message
+end
+
+begin
+  train = CargoTrain.new("98e-e8", :passenger)
+  p "Validate for #{train} successful."  #
+rescue => message
+    p message
+end
+
+begin
+  train = CargoTrain.new("98e-e8", :cargo)
+  p "Validate for #{train} successful."  #
+rescue => message
+    p message
+end
+p "---"
+
+begin
+  carriage = CargoCarriage.new("555-hgf55", :cargo, 123.45)
+  p "Validate for #{carriage} successful."
+  carriage = CargoCarriage.new("555-hgf55", :passenger, 123.45)
+rescue => message
+    p message
+end
 
 #rail_controller.menu

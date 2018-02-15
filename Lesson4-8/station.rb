@@ -7,6 +7,7 @@ class Station
   include Validation
 
   attr_accessor :name
+
   validate :name, :presence
   validate :name, :type, String
 
@@ -18,7 +19,6 @@ class Station
 
   def initialize(name)
     @name = name
-    # validation!
     validate!
     @trains = []
     @@stations << self
@@ -37,11 +37,6 @@ class Station
     @trains.select { |train| train.type == type } if type
   end
 
-  # def valid?
-  #   return false if name.nil? || name.length.zero?
-  #   true
-  # end
-
   def trains
     if block_given?
       trains.each { |train| yield(train) }
@@ -49,10 +44,4 @@ class Station
       @trains
     end
   end
-
-  # private
-
-  # def validation!
-  #   raise ArgumentError, '!!!Station name must have at least one character!!!' unless valid?
-  # end
 end

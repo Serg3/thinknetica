@@ -1,6 +1,8 @@
 require_relative 'carriage'
 
 class CargoCarriage < Carriage
+  validate :type, :type, :cargo
+  
   def space
     @space.round(2)
   end
