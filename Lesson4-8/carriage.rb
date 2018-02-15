@@ -1,11 +1,13 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'accessor'
+require_relative 'validation'
 
 class Carriage
   include Manufacturer
   include InstanceCounter
   include Accessor
+  include Validation
 
   attr_reader :number, :type, :space, :free_space
 
@@ -14,14 +16,14 @@ class Carriage
     @type = type
     @space = space
     @free_space = space
-    validation!
+    # validation!
     register_instance
   end
 
-  def valid?
-    return false if number.nil? || number.length.zero? || (type != :passenger && type != :cargo)
-    true
-  end
+  # def valid?
+  #   return false if number.nil? || number.length.zero? || (type != :passenger && type != :cargo)
+  #   true
+  # end
 
   def taken_space
     (space - free_space).round(2)
@@ -35,7 +37,7 @@ class Carriage
 
   attr_writer :free_space
 
-  def validation!
-    raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
-  end
+  # def validation!
+  #   raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
+  # end
 end

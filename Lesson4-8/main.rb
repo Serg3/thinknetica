@@ -1,6 +1,7 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'accessor'
+require_relative 'validation'
 require_relative 'rail_road'
 require_relative 'station'
 require_relative 'route'
@@ -114,20 +115,22 @@ rail_controller = RailRoad.new
 
 #rail_controller.stations_trains_carriages
 
-Train.attr_accessor_with_history("new_var", "new_var_2")
+# FOR MODULE 10 ----------------------------------
+
+Train.attr_accessor_with_history("new_var_1", "new_var_2")
 
 train = PassengerTrain.new("555-55", :passenger)
 
-p "History_1: #{train.new_var_history}, current_1: #{train.new_var}"
-p "History_2: #{train.new_var_2_history}, current_2: #{train.new_var_2}"
-train.new_var = 1
+p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
+p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
+train.new_var_1 = 1
 train.new_var_2 = 2
-p "History_1: #{train.new_var_history}, current_1: #{train.new_var}"
-p "History_2: #{train.new_var_2_history}, current_2: #{train.new_var_2}"
-train.new_var = 11
+p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
+p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
+train.new_var_1 = 11
 train.new_var_2 = 22
-p "History_1: #{train.new_var_history}, current_1: #{train.new_var}"
-p "History_2: #{train.new_var_2_history}, current_2: #{train.new_var_2}"
+p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
+p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
 
 p "---"
 
@@ -141,5 +144,9 @@ begin
 rescue => message
   p "#{message} CargoCarriage.new('546956', :cargo, 175.6)"
 end
+
+p "----------"
+
+station = Station.new("station_1")
 
 #rail_controller.menu

@@ -1,13 +1,15 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'accessor'
+require_relative 'validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
   include Accessor
+  include Validation
 
-  TRAIN_NUMBER_FORMAT = /^[\w&&[^_]]{3}-*{1}\w{2}$/
+  # TRAIN_NUMBER_FORMAT = /^[\w&&[^_]]{3}-*{1}\w{2}$/
 
   attr_reader :number, :type, :speed, :route
 
@@ -20,7 +22,7 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
-    validation!
+    # validation!
     @carriages = []
     stop
     @@trains[number] = self
@@ -81,9 +83,9 @@ class Train
     @route.stations[next_station_index] if next_station_index < @route.stations.size
   end
 
-  def valid?
-    number =~ TRAIN_NUMBER_FORMAT && (type == :passenger || type == :cargo)
-  end
+  # def valid?
+  #   number =~ TRAIN_NUMBER_FORMAT && (type == :passenger || type == :cargo)
+  # end
 
   def carriages
     if block_given?
@@ -105,7 +107,7 @@ class Train
     @route.stations.index(@station)
   end
 
-  def validation!
-    raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
-  end
+  # def validation!
+  #   raise ArgumentError, '!!!Some argument is wrong!!!' unless valid?
+  # end
 end

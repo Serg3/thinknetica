@@ -1,10 +1,14 @@
 require_relative 'accessor'
+require_relative 'validation'
 
 class Station
   include InstanceCounter
   include Accessor
+  include Validation
 
   attr_accessor :name
+  validate :name, :presence
+  validate :name, :type, String
 
   @@stations = []
 
@@ -14,7 +18,8 @@ class Station
 
   def initialize(name)
     @name = name
-    validation!
+    # validation!
+    validate!
     @trains = []
     @@stations << self
     register_instance
@@ -32,10 +37,10 @@ class Station
     @trains.select { |train| train.type == type } if type
   end
 
-  def valid?
-    return false if name.nil? || name.length.zero?
-    true
-  end
+  # def valid?
+  #   return false if name.nil? || name.length.zero?
+  #   true
+  # end
 
   def trains
     if block_given?
@@ -45,9 +50,9 @@ class Station
     end
   end
 
-  private
+  # private
 
-  def validation!
-    raise ArgumentError, '!!!Station name must have at least one character!!!' unless valid?
-  end
+  # def validation!
+  #   raise ArgumentError, '!!!Station name must have at least one character!!!' unless valid?
+  # end
 end
