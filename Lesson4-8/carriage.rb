@@ -11,6 +11,9 @@ class Carriage
 
   attr_reader :number, :type, :space, :free_space
 
+  attr_accessor_with_history :variables
+  strong_attr_acessor :variable, :type
+
   validate :number, :presence
 
   def initialize(number, type, space)

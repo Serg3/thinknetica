@@ -8,6 +8,9 @@ class Route
 
   attr_reader :stations, :name, :first_station, :last_station
 
+  attr_accessor_with_history :variables
+  strong_attr_acessor :variable, :type
+
   validate :first_station, :type, Station
   validate :last_station, :type, Station
 

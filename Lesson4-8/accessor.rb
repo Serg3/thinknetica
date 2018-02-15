@@ -9,11 +9,12 @@ module Accessor
         var_name = "@#{name}".to_sym
         var_history = "@#{name}_history".to_sym
 
-        define_method(name.to_s.to_sym) { instance_variable_get(var_name) }
+        define_method(name.to_sym) { instance_variable_get(var_name) }
         define_method("#{name}_history".to_sym) { instance_variable_get(var_history) }
 
         define_method("#{name}=".to_sym) do |value|
-          instance_variable_set(var_history, (instance_variable_get(var_history) || []) << value)
+          var_value = instance_variable_get(var_name)
+          instance_variable_set(var_history, (instance_variable_get(var_history) || []) << var_value) if var_value
           instance_variable_set(var_name, value)
         end
       end

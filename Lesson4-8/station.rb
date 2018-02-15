@@ -8,6 +8,9 @@ class Station
 
   attr_accessor :name
 
+  attr_accessor_with_history :variables
+  strong_attr_acessor :variable, :type
+
   validate :name, :presence
   validate :name, :type, String
 

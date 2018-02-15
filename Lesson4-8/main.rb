@@ -117,9 +117,10 @@ rail_controller = RailRoad.new
 
 # FOR MODULE 10 ----------------------------------
 
-Train.attr_accessor_with_history("new_var_1", "new_var_2")
+p "---------- ACCESSORS ----------"
 
 train = PassengerTrain.new("555-55", :passenger)
+train.class.attr_accessor_with_history("new_var_1", "new_var_2")
 
 p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
 p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
@@ -134,7 +135,7 @@ p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
 
 p "---"
 
-Train.strong_attr_acessor("strong_var", PassengerCarriage)
+train.class.strong_attr_acessor("strong_var", PassengerCarriage)
 
 begin
   train.strong_var = PassengerCarriage.new("654-g", :passenger, 68)

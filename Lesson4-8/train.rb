@@ -13,7 +13,8 @@ class Train
 
   attr_reader :number, :type, :speed, :route
 
-  #validate :number, :format, TRAIN_NUMBER_FORMAT
+  attr_accessor_with_history :variables
+  strong_attr_acessor :variable, :type
 
   @@trains = {}
 
