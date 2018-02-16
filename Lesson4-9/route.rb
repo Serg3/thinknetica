@@ -9,7 +9,7 @@ class Route
   attr_reader :stations, :name, :first_station, :last_station
 
   attr_accessor_with_history :variables
-  strong_attr_acessor :variable, :type
+  strong_attr_accessor :variable, :type
 
   validate :first_station, :type, Station
   validate :last_station, :type, Station
@@ -26,7 +26,6 @@ class Route
 
   def add_station(station)
     stations.insert(-2, station)
-    #validation!
   end
 
   def remove_station(station)

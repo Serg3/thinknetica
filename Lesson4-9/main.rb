@@ -119,34 +119,28 @@ rail_controller = RailRoad.new
 
 p "---------- ACCESSORS ----------"
 
-train = PassengerTrain.new("555-55", :passenger)
-train.class.attr_accessor_with_history("new_var_1", "new_var_2")
-
-p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
-p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
-train.new_var_1 = 1
-train.new_var_2 = 2
-p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
-p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
-train.new_var_1 = 11
-train.new_var_2 = 22
-p "History_1: #{train.new_var_1_history}, new_var_1: #{train.new_var_1}"
-p "History_2: #{train.new_var_2_history}, new_var_2: #{train.new_var_2}"
+station = Station.new("Yuzovka")
+p "History: #{station.name_history}, name: #{station.name}"
+station.name = "Stalin"
+p "History: #{station.name_history}, name: #{station.name}"
+station.name = "Stalino"
+p "History: #{station.name_history}, name: #{station.name}"
+station.name = "Donetsk"
+p "History: #{station.name_history}, name: #{station.name}"
 
 p "---"
 
-train.class.strong_attr_acessor("strong_var", PassengerCarriage)
-
+carriage = CargoCarriage.new("654-g", :cargo, 123.45)
 begin
-  train.strong_var = PassengerCarriage.new("654-g", :passenger, 68)
-  p "Strong_var: '#{train.strong_var.number}' of '#{train.strong_var.type}' type."
+  carriage.train = CargoTrain.new("98e-e8", :cargo)
+  p "'#{carriage.train}' of '#{carriage.train.type}' type."
 rescue => message
   p message
 end
 
 begin
-  train.strong_var = CargoCarriage.new("546956", :cargo, 175.6)
-  p "Strong_var: '#{train.strong_var.number}' of '#{train.strong_var.type}' type."
+  carriage.train = PassengerTrain.new("98e-e8", :passenger)
+  p "'#{carriage.train}' of '#{carriage.train.type}' type."
 rescue => message
   p message
 end

@@ -6,10 +6,9 @@ class Station
   include Accessor
   include Validation
 
-  attr_accessor :name
-
-  attr_accessor_with_history :variables
-  strong_attr_acessor :variable, :type
+  #attr_accessor :name
+  attr_accessor_with_history :name
+  strong_attr_accessor :variable, :type
 
   validate :name, :presence
   validate :name, :type, String

@@ -20,12 +20,12 @@ module Validation
         var = instance_variable_get("@#{validation[:name]}")
         arg = validation[:arg]
         arg ? send(valid_method, var, arg) : send(valid_method, var)
-        true
       end
     end
 
     def valid?
       validate!
+      true
     rescue
       false
     end

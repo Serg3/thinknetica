@@ -14,7 +14,7 @@ class Train
   attr_reader :number, :type, :speed, :route
 
   attr_accessor_with_history :variables
-  strong_attr_acessor :variable, :type
+  strong_attr_accessor :variable, :type
 
   @@trains = {}
 
